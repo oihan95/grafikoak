@@ -48,10 +48,15 @@ void print_help(){
  * @param y Y coordinate of the mouse pointer when the key was pressed
  */
 
+GLdouble *bikerkatumatrizea(GLdouble* m1, GLdouble* m2){
+    GLdouble * mult = malloc (sizeof(GLdouble)*4);
+    return mult;
+}
+
 void nodogehiketa(GLdouble* mx_1){
     elementua *nodo=0;
     nodo = (elementua *) malloc(sizeof (elementua));
-    nodo -> matrizea = glMultMatrixd(_selected_object-> pila -> matrizea);
+    nodo -> matrizea = biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
     _selected_object -> pila -> next = nodo;
     nodo -> prev = _selected_object -> pila;
     nodo -> next = NULL;

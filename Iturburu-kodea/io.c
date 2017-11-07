@@ -49,7 +49,8 @@ void print_help(){
  */
 
 GLdouble *bikerkatumatrizea(GLdouble* m1, GLdouble* m2){
-    GLdouble * mult = malloc (sizeof(GLdouble)*4);
+    GLdouble * mult = malloc (sizeof(GLdouble)*16);
+    
     return mult;
 }
 

@@ -48,9 +48,19 @@ void print_help(){
  * @param y Y coordinate of the mouse pointer when the key was pressed
  */
 
+//Metodo honek m1 eta m2 matrizeak biderkatzen ditu
 GLdouble *bikerkatumatrizea(GLdouble* m1, GLdouble* m2){
     GLdouble * mult = malloc (sizeof(GLdouble)*16);
-    
+    int sum = 0;
+    for (int i=0; i<4; i++){
+        for (int j=0; j<4; j++){
+            for (int k=0; k<4; k++){
+                sum = sum + m1[(4*i)+k] * m2[j+(4*k)];
+            }
+            mult[(i*4)+j] = sum;
+            sum = 0;
+        }
+    }
     return mult;
 }
 

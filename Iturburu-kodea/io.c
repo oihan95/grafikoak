@@ -2,7 +2,9 @@
 #include "load_obj.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "transformazioak.h"
+#include <math.h>
 
 #include <stdlib.h> //LINUX
 
@@ -49,9 +51,9 @@ void print_help(){
  */
 
 //Metodo honek m1 eta m2 matrizeak biderkatzen ditu
-GLdouble *bikerkatumatrizea(GLdouble* m1, GLdouble* m2){
+GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
     GLdouble * mult = malloc (sizeof(GLdouble)*16);
-    int sum = 0;
+    float sum = 0;
     for (int i=0; i<4; i++){
         for (int j=0; j<4; j++){
             for (int k=0; k<4; k++){
@@ -64,10 +66,12 @@ GLdouble *bikerkatumatrizea(GLdouble* m1, GLdouble* m2){
     return mult;
 }
 
-void nodogehiketa(GLdouble* mx_1){
+void nodobatuketa(GLdouble* mx_1){
     elementua *nodo=0;
     nodo = (elementua *) malloc(sizeof (elementua));
-    nodo -> matrizea = biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
+    GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
+    matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
+    nodo -> matrizea = matrizeemaitza;
     _selected_object -> pila -> next = nodo;
     nodo -> prev = _selected_object -> pila;
     nodo -> next = NULL;
@@ -108,6 +112,11 @@ void keyboard(unsigned char key, int x, int y) {
             auxiliar_object->next = _first_object;
             _first_object = auxiliar_object;
             _selected_object = _first_object;
+            _selected_object -> pila = (elementua *) malloc (sizeof(elementua));
+            _selected_object -> pila -> matrizea = identitate_matrizea();
+            _selected_object -> pila -> prev = NULL;
+            _selected_object -> pila -> next = NULL;
+            _selected_object -> matrizea = 0;
             printf("%s\n",KG_MSSG_FILEREAD);
             break;
         }
@@ -221,11 +230,13 @@ void keyboard_berezia(int key, int x, int y){
     switch (key) {
             
         case GLUT_KEY_UP:
+            printf("Gezia gora\n");
             if (_selected_object != 0) {
                 mx_t = scale(1,2,1);
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);
             }
+            nodobatuketa(mx_t);
             break;
             
         default:

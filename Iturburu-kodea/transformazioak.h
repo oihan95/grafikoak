@@ -11,6 +11,16 @@
 
 #include <stdio.h>
 
-//GLdouble* scale(float x, float y, float z);
+//#include <GL/glut.h> //LINUX
+#include <GLUT/glut.h> //macOS
+
+//#include <GL/gl.h> //LINUX
+#include <openGL/gl.h> //macOS
+
+//#include <GL/glu.h> //LINUX
+#include <OpenGL/glu.h> //macOS
+
+GLdouble* scale(float x, float y, float z);
+GLdouble* identitate_matrizea();
 
 #endif /* transformazioak_h */

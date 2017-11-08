@@ -21,6 +21,7 @@
 #define KG_MSSG_SUPRFILE                    "Ez dago objekturik ezabatzeko"
 #define KG_MSSG_INFO                        "Objektuaren informazioa:"
 #define KG_MSS_UP_EMPTY                     "Ez dago objekturik handitzeko"
+#define KG_MSSG_PAGE_UP_EMPTY               "Ez dago objekturik Z ardatzean gora mugitzeko"
 
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f
@@ -106,13 +107,13 @@ typedef struct {
     GLint *vertex_table;                /* table with the index of each vertex */
 } face;
 
-struct elementua{
+/*struct elementua{
     GLdouble *matrizea;
     struct elementua *prev;
     struct elementua *next;
-};
+};*/
 
-typedef struct elementua elementua;
+//typedef struct elementua elementua;
 
 /****************************
  * Structure to store a     *
@@ -124,7 +125,7 @@ struct object3d{
     GLint num_faces;                    /* number of faces in the object */
     face *face_table;                   /* table of faces */
     GLdouble *matrizea;
-    elementua *pila;
+    //elementua *pila;
     point3 min;                         /* coordinates' lower bounds */
     point3 max;                         /* coordinates' bigger bounds */
     struct object3d *next;              /* next element in the pile of objects */

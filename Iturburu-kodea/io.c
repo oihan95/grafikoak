@@ -67,16 +67,18 @@ GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
 }
 
 void nodobatuketa(GLdouble* mx_1){
-    elementua *nodo=0;
-    nodo = (elementua *) malloc(sizeof (elementua));
+    //elementua *nodo=0;
+    //nodo = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
-    matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
-    nodo -> matrizea = matrizeemaitza;
-    _selected_object -> pila -> next = nodo;
-    nodo -> prev = _selected_object -> pila;
-    nodo -> next = NULL;
-    _selected_object -> pila = nodo;
-    _selected_object-> matrizea = _selected_object -> pila -> matrizea;
+    //matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
+    matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea);
+    //nodo -> matrizea = matrizeemaitza;
+    //_selected_object -> pila -> next = nodo;
+    //nodo -> prev = _selected_object -> pila;
+    //nodo -> next = NULL;
+    //_selected_object -> pila = nodo;
+    //_selected_object-> matrizea = _selected_object -> pila -> matrizea;
+    _selected_object -> matrizea = matrizeemaitza;
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -112,11 +114,11 @@ void keyboard(unsigned char key, int x, int y) {
             auxiliar_object->next = _first_object;
             _first_object = auxiliar_object;
             _selected_object = _first_object;
-            _selected_object -> pila = (elementua *) malloc (sizeof(elementua));
-            _selected_object -> pila -> matrizea = identitate_matrizea();
-            _selected_object -> pila -> prev = NULL;
-            _selected_object -> pila -> next = NULL;
-            _selected_object -> matrizea = 0;
+            //_selected_object -> pila = (elementua *) malloc (sizeof(elementua));
+            //_selected_object -> pila -> matrizea = identitate_matrizea();
+            //_selected_object -> pila -> prev = NULL;
+            //_selected_object -> pila -> next = NULL;
+            _selected_object -> matrizea = identitate_matrizea();
             printf("%s\n",KG_MSSG_FILEREAD);
             break;
         }
@@ -238,9 +240,23 @@ void keyboard_berezia(int key, int x, int y){
             }
             nodobatuketa(mx_t);
             break;
+        
+        case GLUT_KEY_PAGE_UP:
+            printf("Mugitu z ardatzean gora objektua\n");
+            if (_selected_object != 0) {
+                mx_t = translate(0,0,1);
+                for (int l = 0; l<16; l++){
+                    printf("%f \n", mx_t[l]);
+                }
+            }else{
+                printf("%s\n", KG_MSSG_PAGE_UP_EMPTY);
+            }
+            nodobatuketa(mx_t);
+            break;
             
         default:
             break;
     }
+    glutPostRedisplay();
 }
 

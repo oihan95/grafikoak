@@ -21,6 +21,8 @@
 #include <OpenGL/glu.h> //macOS
 
 GLdouble* scale(float x, float y, float z);
+GLdouble* translate(float x, float y, float z);
 GLdouble* identitate_matrizea();
+
 
 #endif /* transformazioak_h */

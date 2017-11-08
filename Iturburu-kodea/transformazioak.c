@@ -39,6 +39,15 @@ GLdouble* scale(float x, float y, float z){
     return m;
 }
 
+GLdouble* translate(float x, float y, float z){
+    GLdouble * m = malloc (sizeof(GLdouble)*16);
+    m[0]=1; m[4]=0; m[8] =0; m[12]=x;
+    m[1]=0; m[5]=1; m[9] =0; m[13]=y;
+    m[2]=0; m[6]=0; m[10]=1; m[14]=z;
+    m[3]=0; m[7]=0; m[11]=0; m[15]=1;
+    return m;
+}
+
 GLdouble* identitate_matrizea(){
     GLdouble * m = malloc (sizeof(GLdouble)*16);
     m[0]=1; m[4]=0; m[8] =0; m[12]=0;

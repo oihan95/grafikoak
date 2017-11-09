@@ -20,6 +20,8 @@ extern GLdouble _ortho_x_min,_ortho_x_max;
 extern GLdouble _ortho_y_min,_ortho_y_max;
 extern GLdouble _ortho_z_min,_ortho_z_max;
 
+int EGOERA1 = 0;
+
 /**
  * @brief This function just prints information about the use
  * of the keys
@@ -71,7 +73,7 @@ void nodobatuketa(GLdouble* mx_1){
     //nodo = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
     //matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
-    matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea);
+    matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea); //OBJEKTUAREN ARDATZEAN
     //nodo -> matrizea = matrizeemaitza;
     //_selected_object -> pila -> next = nodo;
     //nodo -> prev = _selected_object -> pila;
@@ -216,7 +218,24 @@ void keyboard(unsigned char key, int x, int y) {
             }
         break;
             
-
+    case 'm':
+    case 'M':
+            EGOERA1 = TRASLAZIOA;
+            printf("%s\n", KG_MSSG_TRANS);
+            break;
+            
+    case 'b':
+    case 'B':
+        EGOERA1 = BIRAKETA;
+        printf("%s\n", KG_MSSG_BIRAKETA);
+        break;
+            
+    case 't':
+    case 'T':
+        EGOERA1 = TAMAINA;
+        printf("%s\n", KG_MSSG_TAMAINA);
+        break;
+        
     default:
         /*In the default case we just print the code of the key. This is usefull to define new cases*/
         printf("%d %c\n", key, key);
@@ -230,28 +249,79 @@ void keyboard_berezia(int key, int x, int y){
     GLdouble *mx_t=0;
     
     switch (key) {
-            
+           
+        //GORA
         case GLUT_KEY_UP:
-            printf("Gezia gora\n");
-            if (_selected_object != 0) {
-                mx_t = scale(1,2,1);
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(0, 1, 0);
+                }
+                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);
             }
-            nodobatuketa(mx_t);
             break;
         
-        case GLUT_KEY_PAGE_UP:
-            printf("Mugitu z ardatzean gora objektua\n");
-            if (_selected_object != 0) {
-                mx_t = translate(0,0,1);
-                for (int l = 0; l<16; l++){
-                    printf("%f \n", mx_t[l]);
+        //BEHERA
+        case GLUT_KEY_DOWN:
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(0, -1, 0);
                 }
+                nodobatuketa(mx_t);
+            }else{
+                printf("%s\n", KG_MSS_DOWN_EMPTY);
+            }
+            break;
+        
+        //EZKERRERA
+        case GLUT_KEY_LEFT:
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(-1, 0, 0);
+                }
+                nodobatuketa(mx_t);
+            }else{
+                printf("%s\n", KG_MSS_LEFT_EMPTY);
+            }
+            break;
+        
+        //ESKUINERA
+        case GLUT_KEY_RIGHT:
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(1, 0, 0);
+                }
+                nodobatuketa(mx_t);
+            }else{
+                printf("%s\n", KG_MSS_RIGHT_EMPTY);
+            }
+            break;
+        
+        //AV_PAG
+        case GLUT_KEY_PAGE_UP:
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(0, 0, 1);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateZ(-pi/18);
+                }
+                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSSG_PAGE_UP_EMPTY);
             }
-            nodobatuketa(mx_t);
+            break;
+           
+        //RE_PAG
+        case GLUT_KEY_PAGE_DOWN:
+            if (_selected_object != 0 && EGOERA1 > 0) {
+                if (EGOERA1 == TRASLAZIOA) {
+                    mx_t = translate(0, 0, -1);
+                }
+                nodobatuketa(mx_t);
+            }else{
+                printf("%s\n", KG_MSSG_PAGE_DOWN_EMPTY);
+            }
             break;
             
         default:

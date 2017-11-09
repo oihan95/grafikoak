@@ -20,8 +20,17 @@
 #define KG_MSSG_TABFILE                     "Ez dago objekturik tabulatzeko"
 #define KG_MSSG_SUPRFILE                    "Ez dago objekturik ezabatzeko"
 #define KG_MSSG_INFO                        "Objektuaren informazioa:"
-#define KG_MSS_UP_EMPTY                     "Ez dago objekturik handitzeko"
-#define KG_MSSG_PAGE_UP_EMPTY               "Ez dago objekturik Z ardatzean gora mugitzeko"
+
+#define KG_MSS_UP_EMPTY                     "Ez dago objekturik aurkitu GORA tekla sakatzean"
+#define KG_MSS_DOWN_EMPTY                   "Ez dago objekturik aurkitu BEHERA tekla sakatzean"
+#define KG_MSS_LEFT_EMPTY                   "Ez dago objekturik aurkitu EZKERRA tekla sakatzean"
+#define KG_MSS_RIGHT_EMPTY                  "Ez dago objekturik aurkitu ESKUINA tekla sakatzean"
+#define KG_MSSG_PAGE_UP_EMPTY               "Ez dago objekturik aurkitu AVPAG tekla sakatzean"
+#define KG_MSSG_PAGE_DOWN_EMPTY             "Ez dago objekturik aurkitu REPAG tekla sakatzean"
+
+#define KG_MSSG_TRANS                       "Traslazioa aktibatu da"
+#define KG_MSSG_BIRAKETA                    "Biraketa aktibatu da"
+#define KG_MSSG_TAMAINA                     "Tamaina aldaketa aktibatu da"
 
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f
@@ -61,6 +70,12 @@
 #define KG_COL_Z_AXIS_B                     0.0f
 
 #define KG_MAX_DOUBLE                       100000000.0
+
+#define TRASLAZIOA                          1
+#define BIRAKETA                            2
+#define TAMAINA                             3
+
+#define pi                                  3.141592653589793
 
 /** STRUCTURES **/
 

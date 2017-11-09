@@ -48,6 +48,15 @@ GLdouble* translate(float x, float y, float z){
     return m;
 }
 
+GLdouble* rotateZ(float theta){
+    GLdouble * m = malloc (sizeof(GLdouble)*16);
+    m[0]=cosf(theta); m[4]=-sinf(theta); m[8] =0; m[12]=0;
+    m[1]=sinf(theta); m[5]=cosf(theta); m[9] =0; m[13]=0;
+    m[2]=0; m[6]=0; m[10]=1; m[14]=0;
+    m[3]=0; m[7]=0; m[11]=0; m[15]=1;
+    return m;
+}
+
 GLdouble* identitate_matrizea(){
     GLdouble * m = malloc (sizeof(GLdouble)*16);
     m[0]=1; m[4]=0; m[8] =0; m[12]=0;

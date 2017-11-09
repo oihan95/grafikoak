@@ -85,6 +85,7 @@ void nodobatuketa(GLdouble* mx_1){
 
 void keyboard(unsigned char key, int x, int y) {
 
+    GLdouble *mx_t1;
     char* fname = malloc(sizeof (char)*128); /* Note that scanf adds a null character at the end of the vector*/
     int read = 0;
     object3d *auxiliar_object = 0;
@@ -178,6 +179,9 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_x_min = midx - wd/2;
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
+        }else{
+            mx_t1 = scale(0.5, 0.5, 0.5);
+            nodobatuketa(mx_t1);
         }
         break;
 
@@ -194,6 +198,9 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_x_min = midx - wd/2;
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
+        }else{
+            mx_t1 = scale(2, 2, 2);
+            nodobatuketa(mx_t1);
         }
         break;
 
@@ -255,6 +262,10 @@ void keyboard_berezia(int key, int x, int y){
             if (_selected_object != 0 && EGOERA1 > 0) {
                 if (EGOERA1 == TRASLAZIOA) {
                     mx_t = translate(0, 1, 0);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateX(-pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(1, 0.5, 1);
                 }
                 nodobatuketa(mx_t);
             }else{
@@ -267,6 +278,10 @@ void keyboard_berezia(int key, int x, int y){
             if (_selected_object != 0 && EGOERA1 > 0) {
                 if (EGOERA1 == TRASLAZIOA) {
                     mx_t = translate(0, -1, 0);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateX(pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(1, 2, 1);
                 }
                 nodobatuketa(mx_t);
             }else{
@@ -279,6 +294,10 @@ void keyboard_berezia(int key, int x, int y){
             if (_selected_object != 0 && EGOERA1 > 0) {
                 if (EGOERA1 == TRASLAZIOA) {
                     mx_t = translate(-1, 0, 0);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateY(-pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(2, 1, 1);
                 }
                 nodobatuketa(mx_t);
             }else{
@@ -291,6 +310,10 @@ void keyboard_berezia(int key, int x, int y){
             if (_selected_object != 0 && EGOERA1 > 0) {
                 if (EGOERA1 == TRASLAZIOA) {
                     mx_t = translate(1, 0, 0);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateY(pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(0.5, 1, 1);
                 }
                 nodobatuketa(mx_t);
             }else{
@@ -305,6 +328,8 @@ void keyboard_berezia(int key, int x, int y){
                     mx_t = translate(0, 0, 1);
                 }else if (EGOERA1 == BIRAKETA){
                     mx_t = rotateZ(-pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(1, 1, 0.5);
                 }
                 nodobatuketa(mx_t);
             }else{
@@ -317,6 +342,10 @@ void keyboard_berezia(int key, int x, int y){
             if (_selected_object != 0 && EGOERA1 > 0) {
                 if (EGOERA1 == TRASLAZIOA) {
                     mx_t = translate(0, 0, -1);
+                }else if (EGOERA1 == BIRAKETA){
+                    mx_t = rotateZ(pi/18);
+                }else if (EGOERA1 == TAMAINA){
+                    mx_t = scale(1, 1, 2);
                 }
                 nodobatuketa(mx_t);
             }else{

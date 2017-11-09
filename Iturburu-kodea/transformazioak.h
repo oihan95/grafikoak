@@ -22,6 +22,8 @@
 
 GLdouble* scale(float x, float y, float z);
 GLdouble* translate(float x, float y, float z);
+GLdouble* rotateX(float theta);
+GLdouble* rotateY(float theta);
 GLdouble* rotateZ(float theta);
 GLdouble* identitate_matrizea();
 

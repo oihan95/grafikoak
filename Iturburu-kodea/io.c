@@ -21,6 +21,7 @@ extern GLdouble _ortho_y_min,_ortho_y_max;
 extern GLdouble _ortho_z_min,_ortho_z_max;
 
 int EGOERA1 = 0;
+int EGOERA2 = 5;
 
 /**
  * @brief This function just prints information about the use
@@ -73,7 +74,11 @@ void nodobatuketa(GLdouble* mx_1){
     //nodo = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
     //matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
-    matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea); //OBJEKTUAREN ARDATZEAN
+    if (EGOERA2 == LOKALA) {
+        matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea); //OBJEKTUAREN ARDATZEAN
+    }else if (EGOERA2 == GLOBALA){
+        matrizeemaitza = biderkatumatrizea(_selected_object -> matrizea, mx_1); //OBJEKTUAREN ARDATZEAN
+    }
     //nodo -> matrizea = matrizeemaitza;
     //_selected_object -> pila -> next = nodo;
     //nodo -> prev = _selected_object -> pila;
@@ -242,6 +247,17 @@ void keyboard(unsigned char key, int x, int y) {
         EGOERA1 = TAMAINA;
         printf("%s\n", KG_MSSG_TAMAINA);
         break;
+            
+    case 'g':
+    case 'G':
+            EGOERA2 = GLOBALA;
+            printf("%s\n", KG_MSSG_GLOBALA);
+            break;
+            
+    case 'l':
+    case 'L':
+            EGOERA2 = LOKALA;
+            printf("%s\n", KG_MSSG_LOKALA);
         
     default:
         /*In the default case we just print the code of the key. This is usefull to define new cases*/

@@ -32,6 +32,9 @@
 #define KG_MSSG_BIRAKETA                    "Biraketa aktibatu da"
 #define KG_MSSG_TAMAINA                     "Tamaina aldaketa aktibatu da"
 
+#define KG_MSSG_LOKALA                      "Aldaketa lokala aktibatu da"
+#define KG_MSSG_GLOBALA                     "Aldaketa globala aktibatu da"
+
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f
 #define KG_STEP_ZOOM                        0.75
@@ -74,6 +77,9 @@
 #define TRASLAZIOA                          1
 #define BIRAKETA                            2
 #define TAMAINA                             3
+
+#define LOKALA                              4
+#define GLOBALA                             5
 
 #define pi                                  3.141592653589793
 

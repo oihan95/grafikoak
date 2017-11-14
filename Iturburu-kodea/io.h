@@ -2,7 +2,7 @@
 #define IO_H
 
 void keyboard(unsigned char key, int x, int y);
-void keyboard_berezia(unsigned char key, int x, int y);
+void keyboard_berezia(int key, int x, int y);
 void print_help();
 
 #endif // IO_H

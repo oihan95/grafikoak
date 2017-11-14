@@ -8,8 +8,8 @@
 
 #include <stdlib.h> //LINUX
 
-//#include <GL/glut.h> //LINUX
-#include <GLUT/glut.h> //macOS
+#include <GL/glut.h> //LINUX
+//#include <GLUT/glut.h> //macOS
 
 #include <stdio.h> //LINUX
 
@@ -57,6 +57,7 @@ void print_help(){
 GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
     GLdouble * mult = malloc (sizeof(GLdouble)*16);
     float sum = 0;
+
     for (int i=0; i<4; i++){
         for (int j=0; j<4; j++){
             for (int k=0; k<4; k++){
@@ -70,8 +71,8 @@ GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
 }
 
 void nodobatuketa(GLdouble* mx_1){
-    //elementua *nodo=0;
-    //nodo = (elementua *) malloc(sizeof (elementua));
+    elementua *berria=0;
+    berria = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
     //matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
     if (EGOERA2 == LOKALA) {
@@ -79,13 +80,12 @@ void nodobatuketa(GLdouble* mx_1){
     }else if (EGOERA2 == GLOBALA){
         matrizeemaitza = biderkatumatrizea(_selected_object -> matrizea, mx_1); //OBJEKTUAREN ARDATZEAN
     }
-    //nodo -> matrizea = matrizeemaitza;
-    //_selected_object -> pila -> next = nodo;
-    //nodo -> prev = _selected_object -> pila;
-    //nodo -> next = NULL;
-    //_selected_object -> pila = nodo;
-    //_selected_object-> matrizea = _selected_object -> pila -> matrizea;
-    _selected_object -> matrizea = matrizeemaitza;
+    berria -> matrizea = matrizeemaitza;
+    _selected_object -> pila -> aurrera = berria;
+    berria -> atzera = _selected_object -> pila;
+    berria -> aurrera = NULL;
+    _selected_object -> pila = berria;
+    _selected_object-> matrizea = _selected_object -> pila -> matrizea;
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -122,10 +122,10 @@ void keyboard(unsigned char key, int x, int y) {
             auxiliar_object->next = _first_object;
             _first_object = auxiliar_object;
             _selected_object = _first_object;
-            //_selected_object -> pila = (elementua *) malloc (sizeof(elementua));
-            //_selected_object -> pila -> matrizea = identitate_matrizea();
-            //_selected_object -> pila -> prev = NULL;
-            //_selected_object -> pila -> next = NULL;
+            _selected_object -> pila = (elementua *) malloc (sizeof(elementua));
+            _selected_object -> pila -> matrizea = identitate_matrizea();
+            _selected_object -> pila -> atzera = NULL;
+            _selected_object -> pila -> aurrera = NULL;
             _selected_object -> matrizea = identitate_matrizea();
             printf("%s\n",KG_MSSG_FILEREAD);
             break;
@@ -185,8 +185,10 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
         }else{
-            mx_t1 = scale(0.5, 0.5, 0.5);
-            nodobatuketa(mx_t1);
+	    if (_selected_object != NULL){
+            	mx_t1 = scale(0.5, 0.5, 0.5);
+            	nodobatuketa(mx_t1);
+	    }
         }
         break;
 
@@ -204,8 +206,10 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
         }else{
-            mx_t1 = scale(2, 2, 2);
-            nodobatuketa(mx_t1);
+	    if (_selected_object != NULL){
+           	 mx_t1 = scale(2, 2, 2);
+            	nodobatuketa(mx_t1);
+	    }
         }
         break;
 
@@ -258,7 +262,45 @@ void keyboard(unsigned char key, int x, int y) {
     case 'L':
             EGOERA2 = LOKALA;
             printf("%s\n", KG_MSSG_LOKALA);
-        
+	    break;
+
+    //CTRL + z dec code -> 26
+    case 26:
+	    if (_selected_object != NULL){
+	  	  if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+	    		if (_selected_object -> pila -> atzera != NULL){
+				_selected_object -> pila = _selected_object -> pila -> atzera;
+				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
+				//nodobatuketa(_selected_object -> pila -> matrizea);
+			}else{
+				printf("Ez dago atzera egiteko aukerarik!\n");
+			}
+	 	   }
+	 	   
+            }else{
+		printf("Ez dago objekturik atzera pausua aplikazteko!\n");
+	    }
+	    break;
+
+
+    //CTRL + x dec code -> 24
+    case 24:
+	    if (_selected_object != NULL){
+	  	  if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+	    		if (_selected_object -> pila -> aurrera != NULL){
+				_selected_object -> pila = _selected_object -> pila -> aurrera;
+				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
+				//nodobatuketa(_selected_object -> pila -> matrizea);
+			}else{
+				printf("Ez dago pausua berregiteko aukerarik!\n");
+			}
+	 	   }
+	 	   
+            }else{
+		printf("Ez dago objekturik pausua berregiteko!\n");
+	    }
+	    break;
+
     default:
         /*In the default case we just print the code of the key. This is usefull to define new cases*/
         printf("%d %c\n", key, key);

@@ -1,8 +1,8 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-//#include <GL/gl.h> //LINUX
-#include <openGL/gl.h> //macOS
+#include <GL/gl.h> //LINUX
+//#include <openGL/gl.h> //macOS
 
 /** DEFINITIONS **/
 
@@ -128,13 +128,17 @@ typedef struct {
     GLint *vertex_table;                /* table with the index of each vertex */
 } face;
 
-/*struct elementua{
-    GLdouble *matrizea;
-    struct elementua *prev;
-    struct elementua *next;
-};*/
 
-//typedef struct elementua elementua;
+/****************************
+ * 	     Pila           *
+ ****************************/
+struct elementua{
+    GLdouble *matrizea;
+    struct elementua *atzera;
+    struct elementua *aurrera;
+};
+
+typedef struct elementua elementua;
 
 /****************************
  * Structure to store a     *
@@ -146,7 +150,7 @@ struct object3d{
     GLint num_faces;                    /* number of faces in the object */
     face *face_table;                   /* table of faces */
     GLdouble *matrizea;
-    //elementua *pila;
+    elementua *pila;
     point3 min;                         /* coordinates' lower bounds */
     point3 max;                         /* coordinates' bigger bounds */
     struct object3d *next;              /* next element in the pile of objects */

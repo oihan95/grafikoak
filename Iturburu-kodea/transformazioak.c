@@ -9,17 +9,17 @@
 #include "transformazioak.h"
 #include "definitions.h"
 
-//#include <GL/glut.h> //LINUX
-#include <GLUT/glut.h> //macOS
+#include <GL/glut.h> //LINUX
+//#include <GLUT/glut.h> //macOS
 
-//#include <GL/gl.h> //LINUX
-#include <openGL/gl.h> //macOS
+#include <GL/gl.h> //LINUX
+//#include <openGL/gl.h> //macOS
 
-//#include <GL/glu.h> //LINUX
-#include <OpenGL/glu.h> //macOS
+#include <GL/glu.h> //LINUX
+//#include <OpenGL/glu.h> //macOS
 
-//#include <malloc.h> //LINUX
-#include <malloc/malloc.h> //macOS
+#include <malloc.h> //LINUX
+//#include <malloc/malloc.h> //macOS
 #include <math.h>
 
 extern GLdouble _window_ratio;

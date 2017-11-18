@@ -34,6 +34,7 @@
 
 #define KG_MSSG_LOKALA                      "Aldaketa lokala aktibatu da"
 #define KG_MSSG_GLOBALA                     "Aldaketa globala aktibatu da"
+#define KG_MSS_OPTION_EMPTY                 "Ez dago aldaketa aukerarik aktibatuta"
 
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f

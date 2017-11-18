@@ -313,15 +313,19 @@ void keyboard_berezia(int key, int x, int y){
            
         //GORA
         case GLUT_KEY_UP:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(0, 1, 0);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateX(-pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(1, 0.5, 1);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(0, 1, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateX(-pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(1, 0.5, 1);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                    printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);
             }
@@ -329,15 +333,19 @@ void keyboard_berezia(int key, int x, int y){
         
         //BEHERA
         case GLUT_KEY_DOWN:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(0, -1, 0);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateX(pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(1, 2, 1);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(0, -1, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateX(pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(1, 2, 1);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                    printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSS_DOWN_EMPTY);
             }
@@ -345,15 +353,19 @@ void keyboard_berezia(int key, int x, int y){
         
         //EZKERRERA
         case GLUT_KEY_LEFT:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(-1, 0, 0);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateY(-pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(2, 1, 1);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(-1, 0, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateY(-pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(2, 1, 1);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                    printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSS_LEFT_EMPTY);
             }
@@ -361,15 +373,19 @@ void keyboard_berezia(int key, int x, int y){
         
         //ESKUINERA
         case GLUT_KEY_RIGHT:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(1, 0, 0);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateY(pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(0.5, 1, 1);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(1, 0, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateY(pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(0.5, 1, 1);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                    printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSS_RIGHT_EMPTY);
             }
@@ -377,15 +393,19 @@ void keyboard_berezia(int key, int x, int y){
         
         //AV_PAG
         case GLUT_KEY_PAGE_UP:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(0, 0, 1);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateZ(-pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(1, 1, 0.5);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(0, 0, 1);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateZ(-pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(1, 1, 0.5);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                   printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSSG_PAGE_UP_EMPTY);
             }
@@ -393,15 +413,19 @@ void keyboard_berezia(int key, int x, int y){
            
         //RE_PAG
         case GLUT_KEY_PAGE_DOWN:
-            if (_selected_object != 0 && EGOERA1 > 0) {
-                if (EGOERA1 == TRASLAZIOA) {
-                    mx_t = translate(0, 0, -1);
-                }else if (EGOERA1 == BIRAKETA){
-                    mx_t = rotateZ(pi/18);
-                }else if (EGOERA1 == TAMAINA){
-                    mx_t = scale(1, 1, 2);
+            if (_selected_object != 0) {
+                if (EGOERA1 > 0) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        mx_t = translate(0, 0, -1);
+                    }else if (EGOERA1 == BIRAKETA){
+                        mx_t = rotateZ(pi/18);
+                    }else if (EGOERA1 == TAMAINA){
+                        mx_t = scale(1, 1, 2);
+                    }
+                    nodobatuketa(mx_t);
+                }else{
+                    printf("%s\n", KG_MSS_OPTION_EMPTY);
                 }
-                nodobatuketa(mx_t);
             }else{
                 printf("%s\n", KG_MSSG_PAGE_DOWN_EMPTY);
             }

@@ -1,8 +1,8 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-#include <GL/gl.h> //LINUX
-//#include <openGL/gl.h> //macOS
+//#include <GL/gl.h> //LINUX
+#include <openGL/gl.h> //macOS
 
 /** DEFINITIONS **/
 

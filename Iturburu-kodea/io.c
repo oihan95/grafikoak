@@ -8,8 +8,8 @@
 
 #include <stdlib.h> //LINUX
 
-#include <GL/glut.h> //LINUX
-//#include <GLUT/glut.h> //macOS
+//#include <GL/glut.h> //LINUX
+#include <GLUT/glut.h> //macOS
 
 #include <stdio.h> //LINUX
 
@@ -32,8 +32,8 @@ void print_help(){
     printf("KbG Irakasgaiaren Praktika. Programa honek 3D objektuak \n");
     printf("aldatzen eta bistaratzen ditu.  \n\n");
 
-    printf("Egilea: Borja Calvo (borja.calvo@ehu.es) \n");
-    printf("Data: Irailak, 2014 \n");
+    printf("Egileak: Ugaitz Alonso eta Oihan Arroyo \n");
+    printf("Data: Azaroa, 2017 \n");
     printf("\n\n");
     printf("FUNTZIO NAGUSIAK \n");
     printf("<?>\t\t Laguntza hau bistaratu \n");
@@ -74,11 +74,10 @@ void nodobatuketa(GLdouble* mx_1){
     elementua *berria=0;
     berria = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
-    //matrizeemaitza= biderkatumatrizea(_selected_object-> pila -> matrizea, mx_1);
     if (EGOERA2 == LOKALA) {
         matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea); //OBJEKTUAREN ARDATZEAN
     }else if (EGOERA2 == GLOBALA){
-        matrizeemaitza = biderkatumatrizea(_selected_object -> matrizea, mx_1); //OBJEKTUAREN ARDATZEAN
+        matrizeemaitza = biderkatumatrizea(_selected_object -> matrizea, mx_1); //ARDATZ NAGUSIAN
     }
     berria -> matrizea = matrizeemaitza;
     _selected_object -> pila -> aurrera = berria;
@@ -271,17 +270,14 @@ void keyboard(unsigned char key, int x, int y) {
 	    		if (_selected_object -> pila -> atzera != NULL){
 				_selected_object -> pila = _selected_object -> pila -> atzera;
 				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
-				//nodobatuketa(_selected_object -> pila -> matrizea);
-			}else{
-				printf("Ez dago atzera egiteko aukerarik!\n");
-			}
+                }else{
+                    printf("Ez dago atzera egiteko aukerarik!\n");
+                }
 	 	   }
-	 	   
-            }else{
-		printf("Ez dago objekturik atzera pausua aplikazteko!\n");
+        }else{
+            printf("Ez dago objekturik atzera pausua aplikazteko!\n");
 	    }
 	    break;
-
 
     //CTRL + x dec code -> 24
     case 24:
@@ -290,14 +286,14 @@ void keyboard(unsigned char key, int x, int y) {
 	    		if (_selected_object -> pila -> aurrera != NULL){
 				_selected_object -> pila = _selected_object -> pila -> aurrera;
 				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
-				//nodobatuketa(_selected_object -> pila -> matrizea);
-			}else{
-				printf("Ez dago pausua berregiteko aukerarik!\n");
-			}
+                    
+                }else{
+                    printf("Ez dago pausua berregiteko aukerarik!\n");
+                }
 	 	   }
-	 	   
-            }else{
-		printf("Ez dago objekturik pausua berregiteko!\n");
+            
+        }else{
+            printf("Ez dago objekturik pausua berregiteko!\n");
 	    }
 	    break;
 

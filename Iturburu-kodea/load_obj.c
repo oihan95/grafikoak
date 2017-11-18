@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <malloc.h> //LINUX
-//#include <malloc/malloc.h> //macOS
+//#include <malloc.h> //LINUX
+#include <malloc/malloc.h> //macOS
 
 #include "definitions.h"
 

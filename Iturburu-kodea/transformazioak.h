@@ -11,14 +11,14 @@
 
 #include <stdio.h>
 
-#include <GL/glut.h> //LINUX
-//#include <GLUT/glut.h> //macOS
+//#include <GL/glut.h> //LINUX
+#include <GLUT/glut.h> //macOS
 
-#include <GL/gl.h> //LINUX
-//#include <openGL/gl.h> //macOS
+//#include <GL/gl.h> //LINUX
+#include <openGL/gl.h> //macOS
 
-#include <GL/glu.h> //LINUX
-//#include <OpenGL/glu.h> //macOS
+//#include <GL/glu.h> //LINUX
+#include <OpenGL/glu.h> //macOS
 
 GLdouble* scale(float x, float y, float z);
 GLdouble* translate(float x, float y, float z);

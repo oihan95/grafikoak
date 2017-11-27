@@ -90,6 +90,9 @@
 #define KAM_OBJ_MOTA                        7
 #define KAM_IBILTARIA                       8
 
+#define TRANSFORMAZIOA                      9
+#define KAMERA                              10
+
 #define pi                                  3.141592653589793
 
 /** STRUCTURES **/

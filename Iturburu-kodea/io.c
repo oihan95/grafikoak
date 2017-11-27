@@ -23,6 +23,7 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 int EGOERA1 = 0;
 int EGOERA2 = 5;
 int EGOERA3 = 6;
+int EGOERA_MAIN = 9;
 
 /**
  * @brief This function just prints information about the use
@@ -86,6 +87,10 @@ void nodobatuketa(GLdouble* mx_1){
     berria -> aurrera = NULL;
     _selected_object -> pila = berria;
     _selected_object-> matrizea = _selected_object -> pila -> matrizea;
+}
+
+void nodobatuketakamera(GLdouble* cam_mat){
+    
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -328,23 +333,35 @@ void keyboard(unsigned char key, int x, int y) {
 void keyboard_berezia(int key, int x, int y){
     
     GLdouble *mx_t=0;
+    GLdouble *cam_mat=0;
     
     switch (key) {
            
         //GORA
         case GLUT_KEY_UP:
             if (_selected_object != 0) {
-                if (EGOERA1 > 0) {
-                    if (EGOERA1 == TRASLAZIOA) {
-                        mx_t = translate(0, 1, 0);
-                    }else if (EGOERA1 == BIRAKETA){
-                        mx_t = rotateX(-pi/18);
-                    }else if (EGOERA1 == TAMAINA){
-                        mx_t = scale(1, 0.5, 1);
+                if (EGOERA_MAIN == KAMERA) {
+                    if (EGOERA2 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
+                        if (EGOERA1 == TRASLAZIOA) {
+                            cam_mat = translate(0, 1, 0);
+                        }else if (EGOERA1 == BIRAKETA){
+                            cam_mat = rotateX(-pi/18);
+                        }
+                        nodobatuketakamera(cam_mat);
                     }
-                    nodobatuketa(mx_t);
-                }else{
-                    printf("%s\n", KG_MSS_OPTION_EMPTY);
+                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    if (EGOERA1 > 0) {
+                        if (EGOERA1 == TRASLAZIOA) {
+                            mx_t = translate(0, 1, 0);
+                        }else if (EGOERA1 == BIRAKETA){
+                            mx_t = rotateX(-pi/18);
+                        }else if (EGOERA1 == TAMAINA){
+                            mx_t = scale(1, 0.5, 1);
+                        }
+                        nodobatuketa(mx_t);
+                    }else{
+                        printf("%s\n", KG_MSS_OPTION_EMPTY);
+                    }
                 }
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);

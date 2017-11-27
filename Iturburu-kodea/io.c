@@ -22,6 +22,7 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 
 int EGOERA1 = 0;
 int EGOERA2 = 5;
+int EGOERA3 = 6;
 
 /**
  * @brief This function just prints information about the use
@@ -184,10 +185,10 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
         }else{
-	    if (_selected_object != NULL){
-            	mx_t1 = scale(0.5, 0.5, 0.5);
+            if (_selected_object != NULL){
+                mx_t1 = scale(0.5, 0.5, 0.5);
             	nodobatuketa(mx_t1);
-	    }
+            }
         }
         break;
 
@@ -205,10 +206,10 @@ void keyboard(unsigned char key, int x, int y) {
             _ortho_y_max = midy + he/2;
             _ortho_y_min = midy - he/2;
         }else{
-	    if (_selected_object != NULL){
-           	 mx_t1 = scale(2, 2, 2);
-            	nodobatuketa(mx_t1);
-	    }
+            if (_selected_object != NULL){
+                mx_t1 = scale(2, 2, 2);
+                nodobatuketa(mx_t1);
+            }
         }
         break;
 
@@ -296,6 +297,25 @@ void keyboard(unsigned char key, int x, int y) {
             printf("Ez dago objekturik pausua berregiteko!\n");
 	    }
 	    break;
+            
+    case 'c':
+    case 'C':
+            if (_selected_object != NULL){
+                printf("Kamararen egoera aldatzen ari zara:\n");
+                if (EGOERA3 == KAM_ORTO) {
+                    EGOERA3 = KAM_OBJ_MOTA;
+                    printf("%s\n", KG_MSSG_KAM_OBJ_MOTA);
+                }else if (EGOERA3 == KAM_OBJ_MOTA){
+                    EGOERA3 = KAM_IBILTARIA;
+                    printf("%s\n", KG_MSSG_KAM_IBIL);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    EGOERA3 = KAM_ORTO;
+                    printf("%s\n", KG_MSSG_KAM_ORTO);
+                }
+            }else{
+                printf("%s\n", KG_MSSG_KAM_EMPTY);
+            }
+            break;
 
     default:
         /*In the default case we just print the code of the key. This is usefull to define new cases*/

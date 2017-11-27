@@ -35,6 +35,10 @@
 #define KG_MSSG_LOKALA                      "Aldaketa lokala aktibatu da"
 #define KG_MSSG_GLOBALA                     "Aldaketa globala aktibatu da"
 #define KG_MSS_OPTION_EMPTY                 "Ez dago aldaketa aukerarik aktibatuta"
+#define KG_MSSG_KAM_ORTO                    "Kamera ortografikoa aplikatu da"
+#define KG_MSSG_KAM_OBJ_MOTA                "Perspektiba kamera aplikatu da"
+#define KG_MSSG_KAM_IBIL                    "Kamera ibiltaria aplikatu da"
+#define KG_MSSG_KAM_EMPTY                   "Ez dago objekturik kamara aldatzeko"
 
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f
@@ -81,6 +85,10 @@
 
 #define LOKALA                              4
 #define GLOBALA                             5
+
+#define KAM_ORTO                            6
+#define KAM_OBJ_MOTA                        7
+#define KAM_IBILTARIA                       8
 
 #define pi                                  3.141592653589793
 

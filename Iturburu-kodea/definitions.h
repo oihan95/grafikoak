@@ -34,11 +34,18 @@
 
 #define KG_MSSG_LOKALA                      "Aldaketa lokala aktibatu da"
 #define KG_MSSG_GLOBALA                     "Aldaketa globala aktibatu da"
-#define KG_MSS_OPTION_EMPTY                 "Ez dago aldaketa aukerarik aktibatuta"
+#define KG_MSS_OPTION_EMPTY                 "Ez dago aldaketa aukerarik aktibatuta. Hiru daude: Traslazioa, biraketa eta tamaina aldaketa"
+
+#define KG_MSSG_KAMERA                      "Kamerari aldaketak aplikatzeko moduan zaude"
 #define KG_MSSG_KAM_ORTO                    "Kamera ortografikoa aplikatu da"
 #define KG_MSSG_KAM_OBJ_MOTA                "Perspektiba kamera aplikatu da"
 #define KG_MSSG_KAM_IBIL                    "Kamera ibiltaria aplikatu da"
 #define KG_MSSG_KAM_EMPTY                   "Ez dago objekturik kamara aldatzeko"
+
+#define KG_MSSG_TRANSFORM                   "Objektuari aldaketak aplikatzeko moduan zaude"
+#define KG_MSSG_TRANSFORM_EMPTY             "Ez duzu objektu bati aldaketak aplikatzeko tekla zapaldu ('o' edo 'O')"
+
+#define KG_MSS_OPTION_MAIN_EMPTY            "Ez dago aukera nagusirik aukeratuta. Bi daude: Objektuari aplikatzeko (O) eta kamarari aplikatzeko (K)"
 
 #define KG_STEP_MOVE                        5.0f
 #define KG_STEP_ROTATE                      10.0f
@@ -169,5 +176,15 @@ struct object3d{
 };
 
 typedef struct object3d object3d;
+
+struct camera3d {
+    GLdouble *eye;
+    GLdouble *center;
+    GLdouble *up;
+    elementua *pila;
+    double angelua;
+};
+
+typedef struct camera3d camera3d;
 
 #endif // DEFINITIONS_H

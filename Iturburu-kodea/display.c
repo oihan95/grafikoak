@@ -1,6 +1,5 @@
 #include "definitions.h"
 
-
 //#include <GL/glut.h> //LINUX
 #include <GLUT/glut.h> //macOS
 
@@ -19,6 +18,12 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 
 extern object3d *_first_object;
 extern object3d *_selected_object;
+
+extern int EGOERA3;
+
+extern GLdouble *eye_PK;
+extern GLdouble *up_PK;
+extern GLdouble *center_PK;
 
 /**
  * @brief Function to draw the axes
@@ -63,6 +68,14 @@ void reshape(int width, int height) {
  * @brief Callback display function
  */
 void display(void) {
+    GLdouble *eye_;
+    GLdouble *up_;
+    GLdouble *center_;
+    
+    eye_ = malloc ( sizeof ( GLdouble )*4);
+    center_ = malloc ( sizeof ( GLdouble )*4);
+    up_ = malloc ( sizeof ( GLdouble )*4);
+    
     GLint v_index, v, f;
     object3d *aux_obj = _first_object;
 
@@ -73,26 +86,36 @@ void display(void) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    /*When the window is wider than our original projection plane we extend the plane in the X axis*/
-    if ((_ortho_x_max - _ortho_x_min) / (_ortho_y_max - _ortho_y_min) < _window_ratio) {
-        /* New width */
-        GLdouble wd = (_ortho_y_max - _ortho_y_min) * _window_ratio;
-        /* Midpoint in the X axis */
-        GLdouble midpt = (_ortho_x_min + _ortho_x_max) / 2;
-        /*Definition of the projection*/
-        glOrtho(midpt - (wd / 2), midpt + (wd / 2), _ortho_y_min, _ortho_y_max, _ortho_z_min, _ortho_z_max);
-    } else {/* In the opposite situation we extend the Y axis */
-        /* New height */
-        GLdouble he = (_ortho_x_max - _ortho_x_min) / _window_ratio;
-        /* Midpoint in the Y axis */
-        GLdouble midpt = (_ortho_y_min + _ortho_y_max) / 2;
-        /*Definition of the projection*/
-        glOrtho(_ortho_x_min, _ortho_x_max, midpt - (he / 2), midpt + (he / 2), _ortho_z_min, _ortho_z_max);
+    int itxura = (_ortho_x_max - _ortho_x_min)/(_ortho_y_max - _ortho_y_min);
+    if (EGOERA3 == KAM_ORTO) {
+        /*When the window is wider than our original projection plane we extend the plane in the X axis*/
+        if ((_ortho_x_max - _ortho_x_min) / (_ortho_y_max - _ortho_y_min) < _window_ratio) {
+            /* New width */
+            GLdouble wd = (_ortho_y_max - _ortho_y_min) * _window_ratio;
+            /* Midpoint in the X axis */
+            GLdouble midpt = (_ortho_x_min + _ortho_x_max) / 2;
+            /*Definition of the projection*/
+            glOrtho(midpt - (wd / 2), midpt + (wd / 2), _ortho_y_min, _ortho_y_max, _ortho_z_min, _ortho_z_max);
+        } else {/* In the opposite situation we extend the Y axis */
+            /* New height */
+            GLdouble he = (_ortho_x_max - _ortho_x_min) / _window_ratio;
+            /* Midpoint in the Y axis */
+            GLdouble midpt = (_ortho_y_min + _ortho_y_max) / 2;
+            /*Definition of the projection*/
+            glOrtho(_ortho_x_min, _ortho_x_max, midpt - (he / 2), midpt + (he / 2), _ortho_z_min, _ortho_z_max);
+        }
+    }else if (EGOERA3 == KAM_OBJ_MOTA){
+        gluPerspective(40.0f, itxura, 1.0, 10.0);
     }
+    
 
     /* Now we start drawing the object */
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    if (EGOERA3==KAM_OBJ_MOTA){
+        gluLookAt(eye_PK[0],eye_PK[1],eye_PK[2],center_PK[0],center_PK[1],center_PK[2],up_PK[0],up_PK[1],up_PK[2]);
+    }
 
     /*First, we draw the axes*/
     draw_axes();
@@ -109,6 +132,11 @@ void display(void) {
 
         /* Draw the object; for each face create a new polygon with the corresponding vertices */
         glLoadIdentity();
+        
+        if (EGOERA3 == KAM_OBJ_MOTA){
+            gluLookAt(eye_PK[0],eye_PK[1],eye_PK[2],center_PK[0],center_PK[1],center_PK[2],up_PK[0],up_PK[1],up_PK[2]);
+        }
+        
         glMultMatrixd(aux_obj->matrizea); //BERRIA
         for (f = 0; f < aux_obj->num_faces; f++) {
             glBegin(GL_POLYGON);

@@ -24,8 +24,18 @@ GLdouble _ortho_z_min,_ortho_z_max;         /*Variables for the control of the o
 object3d * _first_object= 0;                /*List of objects*/
 object3d * _selected_object = 0;            /*Object currently selected*/
 
+camera3d *kamera = 0;
+
+GLdouble * eye_PK;
+GLdouble * up_PK;
+GLdouble * center_PK;
+
 /** GENERAL INITIALIZATION **/
 void initialization (){
+    
+    eye_PK = malloc ( sizeof ( GLdouble )*4);
+    center_PK = malloc ( sizeof ( GLdouble )*4);
+    up_PK = malloc ( sizeof ( GLdouble )*4);
 
     /*Initialization of all the variables with the default values*/
     _ortho_x_min = KG_ORTHO_X_MIN_INIT;
@@ -42,6 +52,30 @@ void initialization (){
 
     /*Definition of the method to draw the objects*/
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    
+    kamera = malloc ( sizeof ( camera3d ));
+    kamera -> pila = (elementua *) malloc(sizeof (elementua));
+    kamera -> pila -> matrizea = identitate_matrizea();
+    kamera -> pila -> aurrera= NULL;
+    kamera -> pila -> atzera= NULL;
+    kamera -> eye = malloc ( sizeof ( GLdouble )*4);
+    kamera -> center = malloc ( sizeof ( GLdouble )*4);
+    kamera -> up = malloc ( sizeof ( GLdouble )*4);
+    kamera -> eye[0]=0;
+    kamera -> eye[1]=0;
+    kamera -> eye[2]=-5;
+    kamera -> eye[3]=1;
+    kamera -> center[0]=0;
+    kamera -> center[1]=0;
+    kamera -> center[2]=0;
+    kamera -> center[3]=1;
+    kamera -> up[0]=0;
+    kamera -> up[1]=1;
+    kamera -> up[2]=0;
+    kamera -> up[3]=0;
+    eye_PK = matrizeBektoreBiderketa(kamera -> eye, kamera -> pila -> matrizea);
+    center_PK = matrizeBektoreBiderketa(kamera -> center, kamera -> pila -> matrizea);
+    up_PK = matrizeBektoreBiderketa(kamera -> up, kamera -> pila -> matrizea);
 }
 
 

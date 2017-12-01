@@ -16,20 +16,28 @@
 extern object3d * _first_object;
 extern object3d * _selected_object;
 
+extern GLdouble *view_mat;
+
 extern camera3d * kamera;
+extern camera3d * kamera2;
 
 extern GLdouble *eye_PK;
 extern GLdouble *up_PK;
 extern GLdouble *center_PK;
 
+extern GLdouble *eye_KI;
+extern GLdouble *up_KI;
+extern GLdouble *center_KI;
+
 extern GLdouble _ortho_x_min,_ortho_x_max;
 extern GLdouble _ortho_y_min,_ortho_y_max;
 extern GLdouble _ortho_z_min,_ortho_z_max;
 
+float angle = 20.0;
+
 int EGOERA1 = 0;
 int EGOERA2 = 5;
 int EGOERA3 = 6;
-int EGOERA_MAIN = 9;
 
 /**
  * @brief This function just prints information about the use
@@ -65,7 +73,6 @@ void print_help(){
 GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
     GLdouble * mult = malloc (sizeof(GLdouble)*16);
     float sum = 0;
-
     for (int i=0; i<4; i++){
         for (int j=0; j<4; j++){
             for (int k=0; k<4; k++){
@@ -84,7 +91,7 @@ GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore){
     GLdouble * mult = malloc (sizeof ( GLdouble )*4);
     for (c = 0; c < 4; c++) {
         for (d = 0; d < 4; d++) {
-            sum = sum + matrize[c+d*4]*bektore[d];
+            sum = sum + matrize[c+(d*4)]*bektore[d];
         }
         mult[c] = sum;
         sum = 0;
@@ -109,17 +116,30 @@ void nodobatuketa(GLdouble* mx_1){
     _selected_object-> matrizea = _selected_object -> pila -> matrizea;
 }
 
-void nodobatuketakamera(GLdouble* cam_mat){
+void nodobatuketakameraPers(GLdouble* cam_mat){
     elementua *nodo=0;
     nodo = (elementua *) malloc(sizeof (elementua));
     nodo -> matrizea = biderkatumatrizea(kamera -> pila -> matrizea, cam_mat);
-    eye_PK = matrizeBektoreBiderketa(kamera -> eye, nodo -> matrizea);
-    center_PK = matrizeBektoreBiderketa(kamera -> center, nodo -> matrizea);
-    up_PK = matrizeBektoreBiderketa(kamera -> up, nodo -> matrizea);
+    eye_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> eye);
+    center_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> center);
+    up_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> up);
     kamera -> pila -> aurrera = nodo;
     nodo -> atzera = kamera -> pila;
     nodo -> aurrera = NULL;
     kamera -> pila = nodo;
+}
+
+void nodobatuketakameraIbil(GLdouble* cam_mat){
+    elementua *nodo=0;
+    nodo = (elementua *) malloc(sizeof (elementua));
+    nodo -> matrizea = biderkatumatrizea(cam_mat, kamera2 -> pila -> matrizea);
+    eye_KI = matrizeBektoreBiderketa(kamera2 -> eye ,nodo -> matrizea);
+    center_KI = matrizeBektoreBiderketa(kamera2 -> center , nodo -> matrizea);
+    up_KI = matrizeBektoreBiderketa(kamera2 -> up , nodo -> matrizea);
+    kamera2 -> pila -> aurrera = nodo;
+    nodo -> atzera = kamera2 -> pila;
+    nodo -> aurrera = NULL;
+    kamera2 -> pila = nodo;
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -349,18 +369,6 @@ void keyboard(unsigned char key, int x, int y) {
                 printf("%s\n", KG_MSSG_KAM_EMPTY);
             }
             break;
-            
-    case 'o':
-    case 'O':
-            EGOERA_MAIN = TRANSFORMAZIOA;
-            printf("%s\n", KG_MSSG_TRANSFORM);
-            break;
-            
-    case 'k':
-    case 'K':
-            EGOERA_MAIN = KAMERA;
-            printf("%s\n", KG_MSSG_KAMERA);
-            break;
 
     default:
         /*In the default case we just print the code of the key. This is usefull to define new cases*/
@@ -380,16 +388,17 @@ void keyboard_berezia(int key, int x, int y){
         //GORA
         case GLUT_KEY_UP:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(0, 1, 0);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateX(-pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(0, 1, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateX(-pi/18);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    nodobatuketakameraPers(cam_mat);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    cam_mat=translate(0, 0, -0.5);
+                    nodobatuketakameraIbil(cam_mat);
+                }else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(0, 1, 0);
@@ -402,8 +411,6 @@ void keyboard_berezia(int key, int x, int y){
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
-                }else{
-                    printf("%s\n", KG_MSS_OPTION_MAIN_EMPTY);
                 }
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);
@@ -413,16 +420,17 @@ void keyboard_berezia(int key, int x, int y){
         //BEHERA
         case GLUT_KEY_DOWN:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(0, -1, 0);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateX(pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(0, -1, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateX(pi/18);
                     }
-                } else if (EGOERA_MAIN == TRANSFORMAZIOA) {
+                    nodobatuketakameraPers(cam_mat);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    cam_mat=translate(0, 0, 0.5);
+                    nodobatuketakameraIbil(cam_mat);
+                }else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(0, -1, 0);
@@ -441,19 +449,20 @@ void keyboard_berezia(int key, int x, int y){
             }
             break;
         
-        //EZKERRERA
+            //EZKERRERA
         case GLUT_KEY_LEFT:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(-1, 0, 0);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateY(-pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(-1, 0, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateY(-pi/18);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    nodobatuketakameraPers(cam_mat);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    cam_mat=rotateY(pi/18);
+                    nodobatuketakameraIbil(cam_mat);
+                }else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(-1, 0, 0);
@@ -471,20 +480,21 @@ void keyboard_berezia(int key, int x, int y){
                 printf("%s\n", KG_MSS_LEFT_EMPTY);
             }
             break;
-        
-        //ESKUINERA
+            
+            //ESKUINERA
         case GLUT_KEY_RIGHT:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(1, 0, 0);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateY(pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(1, 0, 0);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateY(pi/18);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    nodobatuketakameraPers(cam_mat);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    cam_mat=rotateY(-pi/18);
+                    nodobatuketakameraIbil(cam_mat);
+                }else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(1, 0, 0);
@@ -503,19 +513,22 @@ void keyboard_berezia(int key, int x, int y){
             }
             break;
         
-        //AV_PAG
+            //AV_PAG
         case GLUT_KEY_PAGE_UP:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(0, 0, 1);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateZ(-pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(0, 0, 1);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateZ(-pi/18);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    nodobatuketakameraPers(cam_mat);
+                }else if (EGOERA3 == KAM_IBILTARIA){
+                    if (kamera2 -> angelua > (-0.9)){
+                        kamera2 -> angelua = kamera2 -> angelua - (0.05);
+                    }
+                    view_mat=rotateX(kamera2 -> angelua);
+                }else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(0, 0, 1);
@@ -534,19 +547,22 @@ void keyboard_berezia(int key, int x, int y){
             }
             break;
            
-        //RE_PAG
+            //RE_PAG
         case GLUT_KEY_PAGE_DOWN:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMERA) {
-                    if (EGOERA3 == KAM_OBJ_MOTA && (EGOERA1 > 0)) {
-                        if (EGOERA1 == TRASLAZIOA) {
-                            cam_mat = translate(0, 0, -1);
-                        }else if (EGOERA1 == BIRAKETA){
-                            cam_mat = rotateZ(pi/18);
-                        }
-                        nodobatuketakamera(cam_mat);
+                if (EGOERA3 == KAM_OBJ_MOTA) {
+                    if (EGOERA1 == TRASLAZIOA) {
+                        cam_mat = translate(0, 0, -1);
+                    }else if (EGOERA1 == BIRAKETA){
+                        cam_mat = rotateZ(pi/18);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
+                    nodobatuketakameraPers(cam_mat);
+                } else if (EGOERA3 == KAM_IBILTARIA){
+                    if (kamera2 -> angelua < (0.9)){
+                        kamera2 -> angelua = kamera2 -> angelua + (0.05);
+                    }
+                    view_mat=rotateX(kamera2 -> angelua);
+                } else if (EGOERA3 == KAM_ORTO){
                     if (EGOERA1 > 0) {
                         if (EGOERA1 == TRASLAZIOA) {
                             mx_t = translate(0, 0, -1);

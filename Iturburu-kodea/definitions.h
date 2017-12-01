@@ -8,7 +8,7 @@
 
 #define KG_WINDOW_TITLE                     "KbG Praktika - Ugaitz Alonso eta Oihan Arroyo"
 #define KG_WINDOW_WIDTH                     800
-#define KG_WINDOW_HEIGHT                    300
+#define KG_WINDOW_HEIGHT                    600
 #define KG_WINDOW_X                         50
 #define KG_WINDOW_Y                         50
 
@@ -96,9 +96,6 @@
 #define KAM_ORTO                            6
 #define KAM_OBJ_MOTA                        7
 #define KAM_IBILTARIA                       8
-
-#define TRANSFORMAZIOA                      9
-#define KAMERA                              10
 
 #define pi                                  3.141592653589793
 

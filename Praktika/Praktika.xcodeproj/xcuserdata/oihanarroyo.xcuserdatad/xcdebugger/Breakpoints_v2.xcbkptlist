@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Iturburu-kodea/io.c"
-            timestampString = "533580517.516543"
+            timestampString = "533813346.64911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "keyboard"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "biderkatumatrizea"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

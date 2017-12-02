@@ -81,6 +81,14 @@ GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
     return mult;
 }
 
+void printMatrix(GLdouble *matrix){
+    int c;
+    for (c = 0; c < 4; c++){
+        printf("\t %f \t %f \t %f \t %f \n",matrix[c], matrix[c+4], matrix[c+8], matrix[c+12]);
+    }
+    printf("\n");
+}
+
 GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore){
     int c, d;
     float sum = 0;

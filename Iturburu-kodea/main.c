@@ -43,12 +43,6 @@ void initialization (){
     eye_PK = malloc ( sizeof ( GLdouble )*4);
     center_PK = malloc ( sizeof ( GLdouble )*4);
     up_PK = malloc ( sizeof ( GLdouble )*4);
-    eye_KI = malloc ( sizeof ( GLdouble )*4);
-    center_KI = malloc ( sizeof ( GLdouble )*4);
-    up_KI = malloc ( sizeof ( GLdouble )*4);
-    
-    view_mat = (GLdouble *) malloc(sizeof (GLdouble)*16);
-    view_mat = identitate_matrizea();
 
     /*Initialization of all the variables with the default values*/
     _ortho_x_min = KG_ORTHO_X_MIN_INIT;
@@ -86,34 +80,10 @@ void initialization (){
     kamera -> up[1]=1;
     kamera -> up[2]=0;
     kamera -> up[3]=0;
-    eye_PK = matrizeBektoreBiderketa(kamera -> eye, kamera -> pila -> matrizea);
-    center_PK = matrizeBektoreBiderketa(kamera -> center, kamera -> pila -> matrizea);
-    up_PK = matrizeBektoreBiderketa(kamera -> up, kamera -> pila -> matrizea);
+    eye_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> eye);
+    center_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> center);
+    up_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> up);
     
-    kamera2 = malloc ( sizeof ( camera3d ));
-    kamera2 -> angelua =0;
-    kamera2 -> pila = (elementua *) malloc(sizeof (elementua));
-    kamera2 -> pila -> matrizea = biderkatumatrizea(translate(0,0,5),identitate_matrizea());
-    kamera2-> pila -> aurrera= NULL;
-    kamera2-> pila -> atzera= NULL;
-    kamera2 -> eye = malloc ( sizeof ( GLdouble )*4);
-    kamera2 -> center = malloc ( sizeof ( GLdouble )*4);
-    kamera2 -> up = malloc ( sizeof ( GLdouble )*4);
-    kamera2 -> eye[0]=0;
-    kamera2 -> eye[1]=0;
-    kamera2 -> eye[2]=0;
-    kamera2 -> eye[3]=1;
-    kamera2 -> center[0]=0;
-    kamera2 -> center[1]=0;
-    kamera2 -> center[2]=-6;
-    kamera2 -> center[3]=1;
-    kamera2 -> up[0]=0;
-    kamera2 -> up[1]=1;
-    kamera2 -> up[2]=0;
-    kamera2 -> up[3]=0;
-    eye_KI = matrizeBektoreBiderketa(kamera2 -> eye, kamera2 -> pila -> matrizea);
-    center_KI = matrizeBektoreBiderketa( kamera2 -> center, kamera2 -> pila -> matrizea);
-    up_KI = matrizeBektoreBiderketa (kamera2 -> up, kamera2 -> pila -> matrizea);
 }
 
 

@@ -94,8 +94,11 @@
 #define GLOBALA                             5
 
 #define KAM_ORTO                            6
-#define KAM_OBJ_MOTA                        7
-#define KAM_IBILTARIA                       8
+#define KAM_PERS                            7
+#define KAM_IBIL                            8
+
+#define TRANSFORMAZIOA                      9
+#define KAMARA                              10
 
 #define pi                                  3.141592653589793
 

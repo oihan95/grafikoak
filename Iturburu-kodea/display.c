@@ -19,18 +19,13 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 extern object3d *_first_object;
 extern object3d *_selected_object;
 
-extern int EGOERA3;
+extern int EGOERA_KAMARA;
 
 extern camera3d *kamera;
-extern camera3d *kamera2;
 
 extern GLdouble *eye_PK;
 extern GLdouble *up_PK;
 extern GLdouble *center_PK;
-
-extern GLdouble *eye_KI;
-extern GLdouble *up_KI;
-extern GLdouble *center_KI;
 
 extern GLdouble *view_mat;
 
@@ -98,7 +93,7 @@ void display(void) {
     glLoadIdentity();
 
     int itxura = (_ortho_x_max - _ortho_x_min)/(_ortho_y_max - _ortho_y_min);
-    if (EGOERA3 == KAM_ORTO) {
+    if (EGOERA_KAMARA == KAM_ORTO) {
         /*When the window is wider than our original projection plane we extend the plane in the X axis*/
         if ((_ortho_x_max - _ortho_x_min) / (_ortho_y_max - _ortho_y_min) < _window_ratio) {
             /* New width */
@@ -115,27 +110,16 @@ void display(void) {
             /*Definition of the projection*/
             glOrtho(_ortho_x_min, _ortho_x_max, midpt - (he / 2), midpt + (he / 2), _ortho_z_min, _ortho_z_max);
         }
-    }else if (EGOERA3 == KAM_OBJ_MOTA){
+    }else if (EGOERA_KAMARA == KAM_PERS){
         gluPerspective(40.0f, itxura, 1.0, 10.0);
-    }else if (EGOERA3 == KAM_IBILTARIA){
-        gluPerspective(25.0f, itxura, 1.0, 10.0);
     }
     
 
     /* Now we start drawing the object */
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    if (EGOERA3 == KAM_ORTO) {
-        
-    }else if (EGOERA3==KAM_OBJ_MOTA){
+    if (EGOERA_KAMARA==KAM_PERS){
         gluLookAt(eye_PK[0],eye_PK[1],eye_PK[2],center_PK[0],center_PK[1],center_PK[2],up_PK[0],up_PK[1],up_PK[2]);
-    }else if(EGOERA3==KAM_IBILTARIA){
-        erantzun_mat= biderkatumatrizea(view_mat, kamera2 -> pila -> matrizea);
-        eye_= matrizeBektoreBiderketa(kamera2 -> eye,erantzun_mat); //HEMEN DAU ERRORIE!!!!!
-        printf("Heldu da");
-        center_= matrizeBektoreBiderketa(kamera2 -> center,erantzun_mat);
-        up_= matrizeBektoreBiderketa(kamera2 -> up,erantzun_mat);
-        gluLookAt(eye_[0],eye_[1],eye_[2],center_[0],center_[1],center_[2],up_[0],up_[1],up_[2]);
     }
 
     /*First, we draw the axes*/
@@ -153,16 +137,8 @@ void display(void) {
 
         /* Draw the object; for each face create a new polygon with the corresponding vertices */
         glLoadIdentity();
-        if (EGOERA3 == KAM_ORTO) {
-            
-        }else if (EGOERA3 == KAM_OBJ_MOTA){
+        if (EGOERA_KAMARA == KAM_PERS){
             gluLookAt(eye_PK[0],eye_PK[1],eye_PK[2],center_PK[0],center_PK[1],center_PK[2],up_PK[0],up_PK[1],up_PK[2]);
-        }else if(EGOERA3==KAM_IBILTARIA){
-            erantzun_mat= biderkatumatrizea(view_mat,kamera2 -> pila -> matrizea);
-            eye_= matrizeBektoreBiderketa(kamera2 -> eye,erantzun_mat);
-            center_= matrizeBektoreBiderketa(kamera2 -> center,erantzun_mat);
-            up_= matrizeBektoreBiderketa(kamera2 -> up,erantzun_mat);
-            gluLookAt(eye_[0],eye_[1],eye_[2],center_[0],center_[1],center_[2],up_[0],up_[1],up_[2]);
         }
         
         glMultMatrixd(aux_obj->matrizea); //BERRIA

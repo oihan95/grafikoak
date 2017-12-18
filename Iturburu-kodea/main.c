@@ -63,6 +63,7 @@ void initialization (){
     kamera = malloc ( sizeof ( camera3d ));
     kamera -> pila = (elementua *) malloc(sizeof (elementua));
     kamera -> pila -> matrizea = identitate_matrizea();
+    kamera -> pila -> matrizea[14] = 6;
     kamera -> pila -> aurrera= NULL;
     kamera -> pila -> atzera= NULL;
     kamera -> eye = malloc ( sizeof ( GLdouble )*4);
@@ -70,11 +71,11 @@ void initialization (){
     kamera -> up = malloc ( sizeof ( GLdouble )*4);
     kamera -> eye[0]=0;
     kamera -> eye[1]=0;
-    kamera -> eye[2]=-6;
+    kamera -> eye[2]=0;
     kamera -> eye[3]=1;
     kamera -> center[0]=0;
     kamera -> center[1]=0;
-    kamera -> center[2]=0;
+    kamera -> center[2]=-6;
     kamera -> center[3]=1;
     kamera -> up[0]=0;
     kamera -> up[1]=1;

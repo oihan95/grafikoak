@@ -123,18 +123,22 @@ void nodobatuketa(GLdouble* mx_1){
 void nodobatuketakameraPers(GLdouble* cam_mat){
     elementua *nodo=0;
     nodo = (elementua *) malloc(sizeof (elementua));
+    GLdouble * matrizeemaitza2 = malloc(sizeof(GLdouble)*16);
+    GLdouble* matrix2 = malloc(sizeof(GLdouble)*16);
+    matrix2 = kamera -> pila -> matrizea;
     if (EGOERA_GLOLOK == LOKALA) {
-        nodo -> matrizea = biderkatumatrizea(cam_mat, kamera -> pila -> matrizea);
+        matrizeemaitza2 = biderkatumatrizea(cam_mat, matrix2);
     } else if (EGOERA_GLOLOK == GLOBALA) {
-        nodo -> matrizea = biderkatumatrizea(kamera -> pila -> matrizea, cam_mat);
+        matrizeemaitza2 = biderkatumatrizea(matrix2, cam_mat);
     }
-    eye_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> eye);
-    center_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> center);
-    up_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> up);
+    nodo -> matrizea = matrizeemaitza2;
     kamera -> pila -> aurrera = nodo;
     nodo -> atzera = kamera -> pila;
     nodo -> aurrera = NULL;
     kamera -> pila = nodo;
+    eye_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> eye);
+    center_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> center);
+    up_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> up);
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -463,6 +467,7 @@ void keyboard_berezia(int key, int x, int y){
                             cam_mat = rotateY(-pi/18);
                         }
                         nodobatuketakameraPers(cam_mat);
+                        //printMatrix(cam_mat);
                     }
                 }else if (EGOERA_MAIN == TRANSFORMAZIOA){
                     if (EGOERA_TRANS > 0) {
@@ -517,14 +522,16 @@ void keyboard_berezia(int key, int x, int y){
             //AV_PAG
         case GLUT_KEY_PAGE_UP:
             if (_selected_object != 0) {
-                if (EGOERA_KAMARA == KAM_PERS && (EGOERA_TRANS > 0)) {
-                    if (EGOERA_TRANS == TRASLAZIOA) {
-                        cam_mat = translate(0, 0, 1);
-                    }else if (EGOERA_TRANS == BIRAKETA){
-                        cam_mat = rotateZ(-pi/18);
+                if (EGOERA_MAIN == KAMARA) {
+                    if (EGOERA_KAMARA == KAM_PERS) {
+                        if (EGOERA_TRANS == TRASLAZIOA) {
+                            cam_mat = translate(0, 0, 1);
+                        }else if (EGOERA_TRANS == BIRAKETA){
+                            cam_mat = rotateZ(-pi/18);
+                        }
+                        nodobatuketakameraPers(cam_mat);
                     }
-                    nodobatuketakameraPers(cam_mat);
-                }else if (EGOERA_KAMARA == KAM_ORTO){
+                } else if (EGOERA_MAIN == TRANSFORMAZIOA){
                     if (EGOERA_TRANS > 0) {
                         if (EGOERA_TRANS == TRASLAZIOA) {
                             mx_t = translate(0, 0, 1);

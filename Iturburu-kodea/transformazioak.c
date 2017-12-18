@@ -84,3 +84,4 @@ GLdouble* identitate_matrizea(){
     m[3]=0; m[7]=0; m[11]=0; m[15]=1;
     return m;
 }
+

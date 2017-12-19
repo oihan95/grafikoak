@@ -9,5 +9,6 @@ void nodobatuketakameraPers(GLdouble* cam_mat);
 void nodobatuketakameraIbil(GLdouble* cam_mat);
 GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore);
 void print_help();
+void printMatrix(GLdouble *lehena);
 
 #endif // IO_H

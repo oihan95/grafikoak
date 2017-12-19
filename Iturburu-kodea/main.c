@@ -43,6 +43,13 @@ void initialization (){
     eye_PK = malloc ( sizeof ( GLdouble )*4);
     center_PK = malloc ( sizeof ( GLdouble )*4);
     up_PK = malloc ( sizeof ( GLdouble )*4);
+    
+    eye_KI = malloc ( sizeof ( GLdouble )*4);
+    center_KI = malloc ( sizeof ( GLdouble )*4);
+    up_KI = malloc ( sizeof ( GLdouble )*4);
+    
+    view_mat = (GLdouble *) malloc(sizeof (GLdouble)*16);
+    view_mat=identitate_matrizea();
 
     /*Initialization of all the variables with the default values*/
     _ortho_x_min = KG_ORTHO_X_MIN_INIT;
@@ -85,6 +92,31 @@ void initialization (){
     center_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> center);
     up_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> up);
     
+    kamera2 = malloc ( sizeof ( camera3d ));
+    kamera2 -> angelua =0;
+    kamera2 -> pila = (elementua *) malloc(sizeof (elementua));
+    kamera2 -> pila -> matrizea = biderkatumatrizea(translate(0,0,5),identitate_matrizea());
+    kamera2-> pila -> aurrera= NULL;
+    kamera2-> pila -> atzera= NULL;
+    kamera2 -> eye = malloc ( sizeof ( GLdouble )*4);
+    kamera2 -> center = malloc ( sizeof ( GLdouble )*4);
+    kamera2 -> up = malloc ( sizeof ( GLdouble )*4);
+    kamera2 -> eye[0]=0;
+    kamera2 -> eye[1]=0;
+    kamera2 -> eye[2]=0;
+    kamera2 -> eye[3]=1;
+    kamera2 -> center[0]=0;
+    kamera2 -> center[1]=0;
+    kamera2 -> center[2]=-5;
+    kamera2 -> center[3]=1;
+    kamera2 -> up[0]=0;
+    kamera2 -> up[1]=1;
+    kamera2 -> up[2]=0;
+    kamera2 -> up[3]=0;
+    eye_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> eye);
+    center_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> center);
+    up_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> up);
+    
 }
 
 
@@ -96,7 +128,8 @@ int main(int argc, char** argv) {
 
     /* glut initializations */
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glEnable(GL_DEPTH_TEST);
     glutInitWindowSize(KG_WINDOW_WIDTH, KG_WINDOW_HEIGHT);
     glutInitWindowPosition(KG_WINDOW_X, KG_WINDOW_Y);
     glutCreateWindow(KG_WINDOW_TITLE);

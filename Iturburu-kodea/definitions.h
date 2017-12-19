@@ -100,7 +100,7 @@
 #define TRANSFORMAZIOA                      9
 #define KAMARA                              10
 
-#define pi                                  3.141592653589793
+#define PI                                  3.1415926
 
 /** STRUCTURES **/
 
@@ -173,6 +173,7 @@ struct object3d{
     point3 min;                         /* coordinates' lower bounds */
     point3 max;                         /* coordinates' bigger bounds */
     struct object3d *next;              /* next element in the pile of objects */
+    vector3 *norm_taula;
 };
 
 typedef struct object3d object3d;

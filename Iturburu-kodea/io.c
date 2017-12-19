@@ -18,11 +18,15 @@ extern object3d * _selected_object;
 
 extern GLdouble *view_mat;
 
-extern camera3d * kamera;
+extern camera3d *kamera, *kamera2;
 
 extern GLdouble *eye_PK;
 extern GLdouble *up_PK;
 extern GLdouble *center_PK;
+
+extern GLdouble *eye_KI;
+extern GLdouble *up_KI;
+extern GLdouble *center_KI;
 
 extern GLdouble _ortho_x_min,_ortho_x_max;
 extern GLdouble _ortho_y_min,_ortho_y_max;
@@ -30,10 +34,10 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 
 float angle = 20.0;
 
-int EGOERA_TRANS = 0;
-int EGOERA_GLOLOK = 5;
-int EGOERA_KAMARA = 6;
-int EGOERA_MAIN = 0;
+int egoera_trans = 0;
+int egoera_glolok = 5;
+int egoera_kamara = 6;
+int egoera_main = 0;
 
 /**
  * @brief This function just prints information about the use
@@ -81,14 +85,6 @@ GLdouble *biderkatumatrizea(GLdouble* m1, GLdouble* m2){
     return mult;
 }
 
-void printMatrix(GLdouble *matrix){
-    int c;
-    for (c = 0; c < 4; c++){
-        printf("\t %f \t %f \t %f \t %f \n",matrix[c], matrix[c+4], matrix[c+8], matrix[c+12]);
-    }
-    printf("\n");
-}
-
 GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore){
     int c, d;
     float sum = 0;
@@ -107,9 +103,9 @@ void nodobatuketa(GLdouble* mx_1){
     elementua *berria=0;
     berria = (elementua *) malloc(sizeof (elementua));
     GLdouble * matrizeemaitza = malloc(sizeof(GLdouble)*16);
-    if (EGOERA_GLOLOK == LOKALA) {
+    if (egoera_glolok == LOKALA) {
         matrizeemaitza = biderkatumatrizea(mx_1, _selected_object -> matrizea); //OBJEKTUAREN ARDATZEAN
-    }else if (EGOERA_GLOLOK == GLOBALA){
+    }else if (egoera_glolok == GLOBALA){
         matrizeemaitza = biderkatumatrizea(_selected_object -> matrizea, mx_1); //ARDATZ NAGUSIAN
     }
     berria -> matrizea = matrizeemaitza;
@@ -126,9 +122,9 @@ void nodobatuketakameraPers(GLdouble* cam_mat){
     GLdouble * matrizeemaitza2 = malloc(sizeof(GLdouble)*16);
     GLdouble* matrix2 = malloc(sizeof(GLdouble)*16);
     matrix2 = kamera -> pila -> matrizea;
-    if (EGOERA_GLOLOK == LOKALA) {
+    if (egoera_glolok == LOKALA) {
         matrizeemaitza2 = biderkatumatrizea(cam_mat, matrix2);
-    } else if (EGOERA_GLOLOK == GLOBALA) {
+    } else if (egoera_glolok == GLOBALA) {
         matrizeemaitza2 = biderkatumatrizea(matrix2, cam_mat);
     }
     nodo -> matrizea = matrizeemaitza2;
@@ -139,6 +135,58 @@ void nodobatuketakameraPers(GLdouble* cam_mat){
     eye_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> eye);
     center_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> center);
     up_PK = matrizeBektoreBiderketa(nodo -> matrizea, kamera -> up);
+}
+
+void nodobatuketakameraibiltari(GLdouble* cam_mat){
+    elementua *nodo=0;
+    nodo = (elementua *) malloc(sizeof (elementua));
+    nodo -> matrizea = biderkatumatrizea(cam_mat, kamera2 -> pila -> matrizea);
+    eye_KI = matrizeBektoreBiderketa(nodo -> matrizea, kamera2 -> eye);
+    center_KI = matrizeBektoreBiderketa(nodo -> matrizea, kamera2 -> center);
+    up_KI = matrizeBektoreBiderketa(nodo -> matrizea, kamera2 -> up);
+    kamera2 -> pila -> aurrera = nodo;
+    nodo -> atzera = kamera2 -> pila;
+    nodo -> aurrera = NULL;
+    kamera2 -> pila = nodo;
+}
+
+void printMatrix(GLdouble *lehena){
+    int c;
+    for (c = 0; c < 4; c++){
+        printf("\t %f \t %f \t %f \t %f \n",lehena[c], lehena[c+4], lehena[c+8], lehena[c+12]);
+    }
+    printf("\n");
+}
+
+vector3 calc_norm(point3 *p1, point3 *p2, point3 *p3){
+    vector3 bektorea, bektorenormala;
+    GLdouble modulua;
+    
+    bektorea.x=((p2 -> y - p1 -> y) * (p3 -> z - p1 -> z))-((p2 -> z - p1 -> z) * (p3 -> y - p1 -> y));
+    bektorea.y=((p2 -> z - p1 -> z) * (p3 -> x - p1 -> x))-((p2 -> x - p1 -> x) * (p3 -> z - p1 -> z));
+    bektorea.z=((p2 -> x - p1 -> x) * (p3 -> y - p1 -> y))-((p2 -> y - p1 -> y) * (p3 -> x - p1 -> x));
+    
+    modulua = sqrt(bektorea.x * bektorea.x + bektorea.y * bektorea.y + bektorea.z * bektorea.z);
+    bektorenormala.x= bektorea.x/modulua;
+    bektorenormala.y= bektorea.y/modulua;
+    bektorenormala.z= bektorea.z/modulua;
+    
+    return bektorenormala;
+}
+
+void kalkulatunormala(object3d *objektua){
+    int i, j;
+    int luzera = objektua->num_faces;
+    vector3 *norm = malloc(sizeof(vector3)* luzera);
+    point3 *vert = malloc (sizeof(point3)*3);
+    
+    for (i=0; i<luzera; i++) {
+        for (j=0; j<3; j++) {
+            vert[j] = objektua->vertex_table[objektua->face_table[i].vertex_table[j]].coord;
+        }
+        norm[i] = calc_norm(&vert[0], &vert[1], &vert[2]);
+    }
+    objektua -> norm_taula = norm;
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -289,43 +337,43 @@ void keyboard(unsigned char key, int x, int y) {
             
     case 'm':
     case 'M':
-            EGOERA_TRANS = TRASLAZIOA;
+            egoera_trans = TRASLAZIOA;
             printf("%s\n", KG_MSSG_TRANS);
             break;
             
     case 'b':
     case 'B':
-        EGOERA_TRANS = BIRAKETA;
+        egoera_trans = BIRAKETA;
         printf("%s\n", KG_MSSG_BIRAKETA);
         break;
             
     case 't':
     case 'T':
-        EGOERA_TRANS = TAMAINA;
+        egoera_trans = TAMAINA;
         printf("%s\n", KG_MSSG_TAMAINA);
         break;
             
     case 'g':
     case 'G':
-            EGOERA_GLOLOK = GLOBALA;
+            egoera_glolok = GLOBALA;
             printf("%s\n", KG_MSSG_GLOBALA);
             break;
             
     case 'l':
     case 'L':
-            EGOERA_GLOLOK = LOKALA;
+            egoera_glolok = LOKALA;
             printf("%s\n", KG_MSSG_LOKALA);
 	    break;
             
     case 'o':
     case 'O':
-            EGOERA_MAIN = TRANSFORMAZIOA;
+            egoera_main = TRANSFORMAZIOA;
             printf("%s\n", KG_MSSG_TRANSFORM);
             break;
     
     case 'k':
     case 'K':
-            EGOERA_MAIN = KAMARA;
+            egoera_main = KAMARA;
             printf("%s\n", KG_MSSG_KAMERA);
             break;
 
@@ -366,14 +414,14 @@ void keyboard(unsigned char key, int x, int y) {
     case 'c':
     case 'C':
             if (_selected_object != NULL){
-                if (EGOERA_KAMARA == KAM_ORTO) {
-                    EGOERA_KAMARA = KAM_PERS;
+                if (egoera_kamara == KAM_ORTO) {
+                    egoera_kamara = KAM_PERS;
                     printf("%s\n", KG_MSSG_KAM_OBJ_MOTA);
-                }else if (EGOERA_KAMARA == KAM_PERS){
-                    EGOERA_KAMARA = KAM_IBIL;
+                }else if (egoera_kamara == KAM_PERS){
+                    egoera_kamara = KAM_IBIL;
                     printf("%s\n", KG_MSSG_KAM_IBIL);
-                }else if (EGOERA_KAMARA == KAM_IBIL){
-                    EGOERA_KAMARA = KAM_ORTO;
+                }else if (egoera_kamara == KAM_IBIL){
+                    egoera_kamara = KAM_ORTO;
                     printf("%s\n", KG_MSSG_KAM_ORTO);
                 }
             }else{
@@ -399,21 +447,28 @@ void keyboard_berezia(int key, int x, int y){
         //GORA
         case GLUT_KEY_UP:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA) {
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA) {
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(0, 1, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateX(-pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            if (egoera_glolok == LOKALA) {
+                                cam_mat = rotateX(PI/18);
+                            } else {
+                                cam_mat = rotateX(-PI/18);
+                            }
                         }
                         nodobatuketakameraPers(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        cam_mat = translate(0, 0, -0.5);
+                        nodobatuketakameraibiltari(cam_mat);
                     }
-                } else if (EGOERA_MAIN == TRANSFORMAZIOA) {
-                    if (EGOERA_TRANS == TRASLAZIOA) {
+                } else if (egoera_main == TRANSFORMAZIOA) {
+                    if (egoera_trans == TRASLAZIOA) {
                         mx_t = translate(0, 1, 0);
-                    }else if (EGOERA_TRANS == BIRAKETA){
-                        mx_t = rotateX(-pi/18);
-                    }else if (EGOERA_TRANS == TAMAINA){
+                    }else if (egoera_trans == BIRAKETA){
+                        mx_t = rotateX(-PI/18);
+                    }else if (egoera_trans == TAMAINA){
                         mx_t = scale(1, 0.5, 1);
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
@@ -428,22 +483,29 @@ void keyboard_berezia(int key, int x, int y){
             //BEHERA
         case GLUT_KEY_DOWN:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA){
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA){
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(0, -1, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateX(pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            if (egoera_glolok == LOKALA) {
+                                cam_mat = rotateX(-PI/18);
+                            } else {
+                                cam_mat = rotateX(PI/18);
+                            }
                         }
                         nodobatuketakameraPers(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        cam_mat = translate(0, 0, 0.5);
+                        nodobatuketakameraibiltari(cam_mat);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA) {
-                    if (EGOERA_TRANS > 0) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                }else if (egoera_main == TRANSFORMAZIOA) {
+                    if (egoera_trans > 0) {
+                        if (egoera_trans == TRASLAZIOA) {
                             mx_t = translate(0, -1, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            mx_t = rotateX(pi/18);
-                        }else if (EGOERA_TRANS == TAMAINA){
+                        }else if (egoera_trans == BIRAKETA){
+                            mx_t = rotateX(PI/18);
+                        }else if (egoera_trans == TAMAINA){
                             mx_t = scale(1, 2, 1);
                         }
                         nodobatuketa(mx_t);
@@ -459,23 +521,29 @@ void keyboard_berezia(int key, int x, int y){
             //EZKERRERA
         case GLUT_KEY_LEFT:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA) {
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA) {
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(-1, 0, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateY(-pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            if (egoera_glolok == LOKALA) {
+                                cam_mat = rotateY(PI/18);
+                            } else {
+                                cam_mat = rotateY(-PI/18);
+                            }
                         }
                         nodobatuketakameraPers(cam_mat);
-                        //printMatrix(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        cam_mat = rotateY(PI/18);
+                        nodobatuketakameraibiltari(cam_mat);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
-                    if (EGOERA_TRANS > 0) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                }else if (egoera_main == TRANSFORMAZIOA){
+                    if (egoera_trans > 0) {
+                        if (egoera_trans == TRASLAZIOA) {
                             mx_t = translate(-1, 0, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            mx_t = rotateY(-pi/18);
-                        }else if (EGOERA_TRANS == TAMAINA){
+                        }else if (egoera_trans == BIRAKETA){
+                            mx_t = rotateY(-PI/18);
+                        }else if (egoera_trans == TAMAINA){
                             mx_t = scale(2, 1, 1);
                         }
                         nodobatuketa(mx_t);
@@ -491,22 +559,29 @@ void keyboard_berezia(int key, int x, int y){
             //ESKUINERA
         case GLUT_KEY_RIGHT:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA) {
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA) {
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(1, 0, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateY(pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            if (egoera_glolok == LOKALA) {
+                                cam_mat = rotateY(-PI/18);
+                            } else {
+                                cam_mat = rotateY(PI/18);
+                            }
                         }
                         nodobatuketakameraPers(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        cam_mat = rotateY(-PI/18);
+                        nodobatuketakameraibiltari(cam_mat);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
-                    if (EGOERA_TRANS > 0) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                }else if (egoera_main == TRANSFORMAZIOA){
+                    if (egoera_trans > 0) {
+                        if (egoera_trans == TRASLAZIOA) {
                             mx_t = translate(1, 0, 0);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            mx_t = rotateY(pi/18);
-                        }else if (EGOERA_TRANS == TAMAINA){
+                        }else if (egoera_trans == BIRAKETA){
+                            mx_t = rotateY(PI/18);
+                        }else if (egoera_trans == TAMAINA){
                             mx_t = scale(0.5, 1, 1);
                         }
                         nodobatuketa(mx_t);
@@ -522,22 +597,29 @@ void keyboard_berezia(int key, int x, int y){
             //AV_PAG
         case GLUT_KEY_PAGE_UP:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA) {
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA) {
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(0, 0, 1);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateZ(-pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            cam_mat = rotateZ(-PI/18);
                         }
                         nodobatuketakameraPers(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        if (kamera2 ->angelua < 0.9) {
+                            kamera2 -> angelua = (kamera2 -> angelua) + 0.05;
+                        }else{
+                            printf("Cuello partido\n");
+                        }
+                        view_mat = rotateX(kamera2 -> angelua);
                     }
-                } else if (EGOERA_MAIN == TRANSFORMAZIOA){
-                    if (EGOERA_TRANS > 0) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                } else if (egoera_main == TRANSFORMAZIOA){
+                    if (egoera_trans > 0) {
+                        if (egoera_trans == TRASLAZIOA) {
                             mx_t = translate(0, 0, 1);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            mx_t = rotateZ(-pi/18);
-                        }else if (EGOERA_TRANS == TAMAINA){
+                        }else if (egoera_trans == BIRAKETA){
+                            mx_t = rotateZ(-PI/18);
+                        }else if (egoera_trans == TAMAINA){
                             mx_t = scale(1, 1, 0.5);
                         }
                         nodobatuketa(mx_t);
@@ -553,22 +635,29 @@ void keyboard_berezia(int key, int x, int y){
             //RE_PAG
         case GLUT_KEY_PAGE_DOWN:
             if (_selected_object != 0) {
-                if (EGOERA_MAIN == KAMARA) {
-                    if (EGOERA_KAMARA == KAM_PERS) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                if (egoera_main == KAMARA) {
+                    if (egoera_kamara == KAM_PERS) {
+                        if (egoera_trans == TRASLAZIOA) {
                             cam_mat = translate(0, 0, -1);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            cam_mat = rotateZ(pi/18);
+                        }else if (egoera_trans == BIRAKETA){
+                            cam_mat = rotateZ(PI/18);
                         }
                         nodobatuketakameraPers(cam_mat);
+                    }else if (egoera_kamara == KAM_IBIL){
+                        if (kamera2 -> angelua > -0.9) {
+                            kamera2 -> angelua = (kamera2 -> angelua) - 0.05;
+                        }else{
+                            printf("Cuello partido\n");
+                        }
+                        view_mat = rotateX(kamera2 -> angelua);
                     }
-                }else if (EGOERA_MAIN == TRANSFORMAZIOA){
-                    if (EGOERA_TRANS > 0) {
-                        if (EGOERA_TRANS == TRASLAZIOA) {
+                }else if (egoera_main == TRANSFORMAZIOA){
+                    if (egoera_trans > 0) {
+                        if (egoera_trans == TRASLAZIOA) {
                             mx_t = translate(0, 0, -1);
-                        }else if (EGOERA_TRANS == BIRAKETA){
-                            mx_t = rotateZ(pi/18);
-                        }else if (EGOERA_TRANS == TAMAINA){
+                        }else if (egoera_trans == BIRAKETA){
+                            mx_t = rotateZ(PI/18);
+                        }else if (egoera_trans == TAMAINA){
                             mx_t = scale(1, 1, 2);
                         }
                         nodobatuketa(mx_t);

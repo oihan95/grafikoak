@@ -30,7 +30,7 @@ extern GLdouble _ortho_z_min,_ortho_z_max;
 extern object3d *_first_object;
 extern object3d *_selected_object;
 
-GLdouble* scale(float x, float y, float z){
+GLdouble* scale(GLdouble x, GLdouble y, GLdouble z){
     GLdouble * m = malloc (sizeof(GLdouble)*16);
     m[0]=x; m[4]=0; m[8] =0; m[12]=0;
     m[1]=0; m[5]=y; m[9] =0; m[13]=0;
@@ -39,7 +39,7 @@ GLdouble* scale(float x, float y, float z){
     return m;
 }
 
-GLdouble* translate(float x, float y, float z){
+GLdouble* translate(GLdouble x, GLdouble y, GLdouble z){
     GLdouble * m = malloc (sizeof(GLdouble)*16);
     m[0]=1; m[4]=0; m[8] =0; m[12]=x;
     m[1]=0; m[5]=1; m[9] =0; m[13]=y;

@@ -20,8 +20,8 @@
 //#include <GL/glu.h> //LINUX
 #include <OpenGL/glu.h> //macOS
 
-GLdouble* scale(float x, float y, float z);
-GLdouble* translate(float x, float y, float z);
+GLdouble* scale(GLdouble x, GLdouble y, GLdouble z);
+GLdouble* translate(GLdouble x, GLdouble y, GLdouble z);
 GLdouble* rotateX(float theta);
 GLdouble* rotateY(float theta);
 GLdouble* rotateZ(float theta);

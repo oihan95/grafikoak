@@ -38,6 +38,20 @@ int egoera_trans = 0;
 int egoera_glolok = 5;
 int egoera_kamara = 6;
 int egoera_main = 0;
+int argi_mota = 11;
+int argi_zenb = 14;
+int argi_egoera = 18;
+int argi1egoera = 20;
+int argi2egoera = 20;
+int argi3egoera = 20;
+int objektu_bistaratzea = 22;
+int materiala = 24;
+
+extern argia *eguzkia;
+extern argia *fokua;
+extern argia *bonbila;
+
+float angle2 = 20.0;
 
 /**
  * @brief This function just prints information about the use
@@ -206,6 +220,7 @@ void keyboard(unsigned char key, int x, int y) {
         /*Allocate memory for the structure and read the file*/
         auxiliar_object = (object3d *) malloc(sizeof (object3d));
         read = read_wavefront(fname, auxiliar_object);
+        kalkulatunormala(auxiliar_object);
         switch (read) {
         /*Errors in the reading*/
         case 1:
@@ -376,6 +391,12 @@ void keyboard(unsigned char key, int x, int y) {
             egoera_main = KAMARA;
             printf("%s\n", KG_MSSG_KAMERA);
             break;
+            
+    case 'a':
+    case 'A':
+        egoera_main = ARGIA;
+        printf("Aldaketak argian aplikatuko dira\n");
+        break;
 
     //CTRL + z dec code -> 26
     case 26:
@@ -426,6 +447,44 @@ void keyboard(unsigned char key, int x, int y) {
                 }
             }else{
                 printf("%s\n", KG_MSSG_KAM_EMPTY);
+            }
+            break;
+            
+    case 48:
+            if (argi_mota == ARG_BONBILLA) {
+                argi_mota = ARG_EGUZKIA;
+                printf("Eguzkia argi mota aktibatu da\n");
+            } else if (argi_mota == ARG_EGUZKIA){
+                argi_mota = ARG_FOKUA;
+                printf("Fokua argi mota aktibatu da\n");
+            } else if (argi_mota == ARG_FOKUA){
+                argi_mota = ARG_BONBILLA;
+                printf("Bonbilla argi mota aktibatu da\n");
+            }
+            break;
+            
+    case 49:
+            argi_zenb = 14;
+            printf("Lehenengo argia aktibatu da\n");
+            break;
+            
+    case 50:
+            argi_zenb = 15;
+            printf("Bigarren argia aktibatu da\n");
+            break;
+            
+    case 51:
+            argi_zenb = 16;
+            printf("Hirugarren argia aktibatu da\n");
+            break;
+            
+    case 13:
+            if (argi_egoera == ARGIA_DESGAITU) {
+                argi_egoera = ARGIA_GAITU;
+                printf("Argien kontrola gaitu da");
+            } else if (argi_egoera == ARGIA_GAITU) {
+                argi_egoera = ARGIA_DESGAITU;
+                printf("Argien kontrola desgaitu da");
             }
             break;
 
@@ -667,6 +726,50 @@ void keyboard_berezia(int key, int x, int y){
                 }
             }else{
                 printf("%s\n", KG_MSSG_PAGE_DOWN_EMPTY);
+            }
+            break;
+            
+        case GLUT_KEY_F1:
+            if (argi1egoera == ARGI_PIZTU) {
+                argi1egoera = ARGI_ITZALI;
+                printf("Lehenengo argia itzali da\n");
+            } else if (argi1egoera == ARGI_ITZALI) {
+                argi1egoera = ARGI_PIZTU;
+                printf("Lehenengo argia piztu da\n");
+            }
+            break;
+            
+        case GLUT_KEY_F2:
+            if (argi2egoera == ARGI_PIZTU) {
+                argi2egoera = ARGI_ITZALI;
+                printf("Bigarren argia itzali da\n");
+            } else if (argi2egoera == ARGI_ITZALI) {
+                argi2egoera = ARGI_PIZTU;
+                printf("Bigarren argia piztu da\n");
+            }
+            break;
+            
+        case GLUT_KEY_F3:
+            if (argi3egoera == ARGI_PIZTU) {
+                argi3egoera = ARGI_ITZALI;
+                printf("Hirugarren argia itzali da\n");
+            } else if (argi3egoera == ARGI_ITZALI) {
+                argi3egoera = ARGI_PIZTU;
+                printf("Hirugarren argia piztu da\n");
+            }
+            break;
+            
+        case GLUT_KEY_F11:
+            printf("Materiala kargatuko da\n");
+            break;
+        
+        case GLUT_KEY_F12:
+            if (objektu_bistaratzea == OBJE_FLAT) {
+                objektu_bistaratzea = OBJE_SMOOTH;
+                printf("Objektu bistaraketa smooth motakoa aktibatu da\n");
+            } else if (objektu_bistaratzea == OBJE_SMOOTH) {
+                objektu_bistaratzea = OBJE_FLAT;
+                printf("Objektu bistaraketa flat motakoa aktibatu da\n");
             }
             break;
             

@@ -37,6 +37,10 @@ GLdouble *eye_KI;
 GLdouble *up_KI;
 GLdouble *center_KI;
 
+argia *eguzkia;
+argia *fokua;
+argia *bonbila;
+
 /** GENERAL INITIALIZATION **/
 void initialization (){
     
@@ -50,6 +54,24 @@ void initialization (){
     
     view_mat = (GLdouble *) malloc(sizeof (GLdouble)*16);
     view_mat=identitate_matrizea();
+    
+    eguzkia = (argia *) malloc(sizeof (argia));
+    eguzkia -> norabidea[0] = 1.0;
+    eguzkia -> norabidea[1] = 0.0;
+    eguzkia -> norabidea[2] = 0.0;
+    eguzkia -> norabidea[3] = 0.0;
+    
+    fokua = (argia *) malloc(sizeof (argia));
+    fokua -> kokapena[0] = 0.0;
+    fokua -> kokapena[1] = 3.0;
+    fokua -> kokapena[2] = 0.0;
+    fokua -> kokapena[3] = 1.0;
+    
+    bonbila = (argia *) malloc(sizeof (argia));
+    bonbila -> kokapena[0] = 0.0;
+    bonbila -> kokapena[1] = 3.0;
+    bonbila -> kokapena[2] = 0.0;
+    bonbila -> kokapena[3] = 1.0;
 
     /*Initialization of all the variables with the default values*/
     _ortho_x_min = KG_ORTHO_X_MIN_INIT;
@@ -129,10 +151,10 @@ int main(int argc, char** argv) {
     /* glut initializations */
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    glEnable(GL_DEPTH_TEST);
     glutInitWindowSize(KG_WINDOW_WIDTH, KG_WINDOW_HEIGHT);
     glutInitWindowPosition(KG_WINDOW_X, KG_WINDOW_Y);
     glutCreateWindow(KG_WINDOW_TITLE);
+    glEnable(GL_DEPTH_TEST);
 
     /* set the callback functions */
     glutDisplayFunc(display);

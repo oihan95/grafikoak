@@ -100,6 +100,28 @@
 #define TRANSFORMAZIOA                      9
 #define KAMARA                              10
 
+#define ARG_BONBILLA                        11
+#define ARG_EGUZKIA                         12
+#define ARG_FOKUA                           13
+
+#define ARG_1                               14
+#define ARG_2                               15
+#define ARG_3                               16
+
+#define ARGIA                               17
+
+#define ARGIA_DESGAITU                      18
+#define ARGIA_GAITU                         19
+
+#define ARGI_ITZALI                         20
+#define ARGI_PIZTU                          21
+
+#define OBJE_FLAT                           22
+#define OBJE_SMOOTH                         23
+
+#define BAI                                 24
+#define EZ                                  25
+
 #define PI                                  3.1415926
 
 /** STRUCTURES **/
@@ -147,6 +169,21 @@ typedef struct {
     GLint *vertex_table;                /* table with the index of each vertex */
 } face;
 
+struct argia{
+    GLfloat kokapena[4];
+    GLfloat norabidea[4];
+    struct argia *next;
+};
+
+typedef struct argia argia;
+
+typedef struct material{
+    GLfloat ambient[4];
+    GLfloat diffuse[4];
+    GLfloat specular[4];
+    GLfloat shininess;
+    
+}material;
 
 /****************************
  * 	     Pila           *
@@ -172,6 +209,7 @@ struct object3d{
     elementua *pila;
     point3 min;                         /* coordinates' lower bounds */
     point3 max;                         /* coordinates' bigger bounds */
+    struct material material;
     struct object3d *next;              /* next element in the pile of objects */
     vector3 *norm_taula;
 };

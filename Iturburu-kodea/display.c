@@ -295,13 +295,13 @@ void display(void) {
     else if(argi3egoera == ARGI3_ITZALI && argi_zenb == ARG_3)
         glDisable(GL_LIGHT2);
     if(argi4egoera == ARGI4_PIZTU && argi_zenb == ARG_4)
-        glEnable(GL_LIGHT4);
+        glEnable(GL_LIGHT3);
     else if(argi4egoera == ARGI4_ITZALI && argi_zenb == ARG_4)
-        glDisable(GL_LIGHT4);
+        glDisable(GL_LIGHT3);
     if(argi5egoera == ARGI5_PIZTU && argi_zenb == ARG_5)
         glEnable(GL_LIGHT4);
     else if(argi5egoera == ARGI5_ITZALI && argi_zenb == ARG_5)
-        glDisable(GL_LIGHT5);
+        glDisable(GL_LIGHT4);
     argiak_sartu(argi_mota, argi_zenb);
 
     /*Now each of the objects in the list*/

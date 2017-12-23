@@ -545,6 +545,14 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                     nodobatuketa(mx_t);
+                } else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[1] = bonbila -> kokapena[1] + 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[1] = fokua -> kokapena[1] + 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[1] = eguzkia -> norabidea[1] + 1;
+                    }
                 }
             }else{
                 printf("%s\n", KG_MSS_UP_EMPTY);
@@ -582,6 +590,14 @@ void keyboard_berezia(int key, int x, int y){
                         nodobatuketa(mx_t);
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
+                    }
+                }else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[1] = bonbila -> kokapena[1] - 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[1] = fokua -> kokapena[1] - 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[1] = eguzkia -> norabidea[1] - 1;
                     }
                 }
             }else{

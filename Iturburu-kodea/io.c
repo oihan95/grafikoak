@@ -42,8 +42,10 @@ int argi_mota = 11;
 int argi_zenb = 14;
 int argi_egoera = 18;
 int argi1egoera = 20;
-int argi2egoera = 20;
-int argi3egoera = 20;
+int argi2egoera = 26;
+int argi3egoera = 28;
+int argi4egoera = 32;
+int argi5egoera = 34;
 int objektu_bistaratzea = 22;
 int materiala = 24;
 
@@ -478,6 +480,16 @@ void keyboard(unsigned char key, int x, int y) {
             printf("Hirugarren argia aktibatu da\n");
             break;
             
+    case 52:
+            argi_zenb = 30;
+            printf("Laugarren argia aktibatu da\n");
+            break;
+        
+    case 53:
+            argi_zenb = 31;
+            printf("Bostgarren argia aktibatu da\n");
+            break;
+            
     case 13:
             if (argi_egoera == ARGIA_DESGAITU) {
                 argi_egoera = ARGIA_GAITU;
@@ -730,37 +742,63 @@ void keyboard_berezia(int key, int x, int y){
             break;
             
         case GLUT_KEY_F1:
-            if (argi1egoera == ARGI_PIZTU) {
-                argi1egoera = ARGI_ITZALI;
+            if (argi1egoera == ARGI1_PIZTU) {
+                argi1egoera = ARGI1_ITZALI;
                 printf("Lehenengo argia itzali da\n");
-            } else if (argi1egoera == ARGI_ITZALI) {
-                argi1egoera = ARGI_PIZTU;
+            } else if (argi1egoera == ARGI1_ITZALI) {
+                argi1egoera = ARGI1_PIZTU;
                 printf("Lehenengo argia piztu da\n");
             }
             break;
             
         case GLUT_KEY_F2:
-            if (argi2egoera == ARGI_PIZTU) {
-                argi2egoera = ARGI_ITZALI;
+            if (argi2egoera == ARGI2_PIZTU) {
+                argi2egoera = ARGI2_ITZALI;
                 printf("Bigarren argia itzali da\n");
-            } else if (argi2egoera == ARGI_ITZALI) {
-                argi2egoera = ARGI_PIZTU;
+            } else if (argi2egoera == ARGI2_ITZALI) {
+                argi2egoera = ARGI2_PIZTU;
                 printf("Bigarren argia piztu da\n");
             }
             break;
             
         case GLUT_KEY_F3:
-            if (argi3egoera == ARGI_PIZTU) {
-                argi3egoera = ARGI_ITZALI;
+            if (argi3egoera == ARGI3_PIZTU) {
+                argi3egoera = ARGI3_ITZALI;
                 printf("Hirugarren argia itzali da\n");
-            } else if (argi3egoera == ARGI_ITZALI) {
-                argi3egoera = ARGI_PIZTU;
+            } else if (argi3egoera == ARGI3_ITZALI) {
+                argi3egoera = ARGI3_PIZTU;
                 printf("Hirugarren argia piztu da\n");
             }
             break;
             
+        case GLUT_KEY_F5:
+            if (argi5egoera == ARGI5_PIZTU) {
+                argi5egoera = ARGI5_ITZALI;
+                printf("Bostgarren argia itzali da\n");
+            } else if (argi5egoera == ARGI5_ITZALI) {
+                argi5egoera = ARGI5_PIZTU;
+                printf("Bostgarren argia piztu da\n");
+            }
+            break;
+            
+        case GLUT_KEY_F4:
+            if (argi4egoera == ARGI4_PIZTU) {
+                argi4egoera = ARGI4_ITZALI;
+                printf("Laugarren argia itzali da\n");
+            } else if (argi4egoera == ARGI4_ITZALI) {
+                argi4egoera = ARGI4_PIZTU;
+                printf("Laugarren argia piztu da\n");
+            }
+            break;
+            
         case GLUT_KEY_F11:
-            printf("Materiala kargatuko da\n");
+            if (materiala == BAI) {
+                materiala = EZ;
+                printf("Materiala kenduko da\n");
+            } else if (materiala == EZ) {
+                materiala = BAI;
+                printf("Materiala kargatuko da\n");
+            }
             break;
         
         case GLUT_KEY_F12:

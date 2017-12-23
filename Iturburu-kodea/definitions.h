@@ -107,14 +107,28 @@
 #define ARG_1                               14
 #define ARG_2                               15
 #define ARG_3                               16
+#define ARG_4                               30
+#define ARG_5                               31
 
 #define ARGIA                               17
 
 #define ARGIA_DESGAITU                      18
 #define ARGIA_GAITU                         19
 
-#define ARGI_ITZALI                         20
-#define ARGI_PIZTU                          21
+#define ARGI1_ITZALI                        20
+#define ARGI1_PIZTU                         21
+
+#define ARGI2_ITZALI                        26
+#define ARGI2_PIZTU                         27
+
+#define ARGI3_ITZALI                        28
+#define ARGI3_PIZTU                         29
+
+#define ARGI4_ITZALI                        32
+#define ARGI4_PIZTU                         33
+
+#define ARGI5_ITZALI                        34
+#define ARGI5_PIZTU                         35
 
 #define OBJE_FLAT                           22
 #define OBJE_SMOOTH                         23

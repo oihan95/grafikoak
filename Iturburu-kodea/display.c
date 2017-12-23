@@ -39,6 +39,14 @@ extern int objektu_bistaratzea;
 extern int argi_egoera;
 extern int materiala;
 
+extern int argi1egoera;
+extern int argi2egoera;
+extern int argi3egoera;
+extern int argi4egoera;
+extern int argi5egoera;
+
+extern int argi_mota;
+
 extern float angle2;
 
 extern argia *bonbila;
@@ -70,61 +78,61 @@ void draw_axes()
     glEnd();
 }
 
-void argiak_sartu(int argia, int argi_aukera){
-    if(argia == 1) {
+void argiak_sartu(int argimota, int argizenb){
+    if(argimota == ARG_BONBILLA) {
         GLfloat kokapena[4] = {0.0, 3.0, 0.0, 1.0};
-        if(argi_aukera == 1){
+        if(argizenb == ARG_1){
             glLightfv(GL_LIGHT0, GL_POSITION, bonbila -> kokapena);
             glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0);
-        }else if(argi_aukera == 2){
+        }else if(argizenb == ARG_2){
             glLightfv(GL_LIGHT1, GL_POSITION, bonbila -> kokapena);
             glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 180.0);
-        }else if(argi_aukera == 3){
+        }else if(argizenb == ARG_3){
             glLightfv(GL_LIGHT2, GL_POSITION, bonbila -> kokapena);
             glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180.0);
-        }else if(argi_aukera == 4){
+        }else if(argizenb == ARG_4){
             glLightfv(GL_LIGHT3, GL_POSITION, bonbila -> kokapena);
             glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, 180.0);
-        }else if(argi_aukera == 5){
+        }else if(argizenb == ARG_5){
             glLightfv(GL_LIGHT4, GL_POSITION, bonbila -> kokapena);
             glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, 180.0);
         }
-    }else if(argia == 2){
+    }else if(argimota == ARG_EGUZKIA){
         GLfloat norabidea[4] = {1.0, 0.0, 0.0, 0.0};
-        if(argi_aukera == 1)
+        if(argizenb == ARG_1)
             glLightfv(GL_LIGHT0, GL_POSITION, eguzkia -> norabidea);
-        else if(argi_aukera == 2)
+        else if(argizenb == ARG_2)
             glLightfv(GL_LIGHT1, GL_POSITION, norabidea);
-        else if(argi_aukera == 3)
+        else if(argizenb == ARG_3)
             glLightfv(GL_LIGHT2, GL_POSITION, norabidea);
-        else if(argi_aukera == 4)
+        else if(argizenb == ARG_4)
             glLightfv(GL_LIGHT3, GL_POSITION, norabidea);
-        else if(argi_aukera == 5)
+        else if(argizenb == ARG_5)
             glLightfv(GL_LIGHT4, GL_POSITION, norabidea);
-    }else if(argia == 3){
+    }else if(argimota == ARG_FOKUA){
         GLfloat kokapena[4] = {0.0, 3.0, 0.0, 1.0};
         GLfloat norabidea[4] = {0.0,  -1.0, 0.0};
-        if(argi_aukera == 1){
+        if(argizenb == ARG_1){
             glLightfv(GL_LIGHT0, GL_POSITION, fokua -> kokapena);
             glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, angle2);
             glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1.0);
-        }else if(argi_aukera == 2){
+        }else if(argizenb == ARG_2){
             glLightfv(GL_LIGHT1, GL_POSITION, kokapena);
             glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angle2);
             glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 1.0);
-        }else if(argi_aukera == 3){
+        }else if(argizenb == ARG_3){
             glLightfv(GL_LIGHT2, GL_POSITION, kokapena);
             glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, angle2);
             glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1.0);
-        }else if(argi_aukera == 4){
+        } else if(argizenb == ARG_4){
             glLightfv(GL_LIGHT3, GL_POSITION, kokapena);
             glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, angle2);
             glLightf(GL_LIGHT3, GL_SPOT_EXPONENT, 1.0);
-        }else if(argi_aukera == 5){
+        } else if(argizenb == ARG_5){
             glLightfv(GL_LIGHT4, GL_POSITION, kokapena);
             glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, angle2);
@@ -241,6 +249,20 @@ void display(void) {
         glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);
         glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.0);
         glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 1.0);
+    } else if(argi_zenb == ARG_4){
+        glLightfv(GL_LIGHT3, GL_AMBIENT, grisa);
+        glLightfv(GL_LIGHT3, GL_DIFFUSE, horia);
+        glLightfv(GL_LIGHT3, GL_SPECULAR, txuria);
+        glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION, 1.0);
+        glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION, 0.0);
+        glLightf(GL_LIGHT3, GL_QUADRATIC_ATTENUATION, 1.0);
+    } else if(argi_zenb == ARG_5){
+        glLightfv(GL_LIGHT4, GL_AMBIENT, grisa);
+        glLightfv(GL_LIGHT4, GL_DIFFUSE, horia);
+        glLightfv(GL_LIGHT4, GL_SPECULAR, txuria);
+        glLightf(GL_LIGHT4, GL_CONSTANT_ATTENUATION, 1.0);
+        glLightf(GL_LIGHT4, GL_LINEAR_ATTENUATION, 0.0);
+        glLightf(GL_LIGHT4, GL_QUADRATIC_ATTENUATION, 1.0);
     }
     
     if(objektu_bistaratzea == OBJE_SMOOTH){
@@ -260,19 +282,27 @@ void display(void) {
         
     }
     
-    if(ARG_1 == ARGI_PIZTU && argi_zenb == ARG_1)
+    if(argi1egoera == ARGI1_PIZTU && argi_zenb == ARG_1)
         glEnable(GL_LIGHT0);
-    else if(ARG_1 == ARGI_ITZALI && argi_zenb == ARG_1)
+    else if(argi1egoera == ARGI1_ITZALI && argi_zenb == ARG_1)
         glDisable(GL_LIGHT0);
-    if(ARG_2 == ARGI_PIZTU && argi_zenb == ARG_2)
+    if(argi2egoera == ARGI2_PIZTU && argi_zenb == ARG_2)
         glEnable(GL_LIGHT1);
-    else if(ARG_2 == ARGI_ITZALI && argi_zenb == ARG_2)
+    else if(argi2egoera == ARGI2_ITZALI && argi_zenb == ARG_2)
         glDisable(GL_LIGHT1);
-    if(ARG_3 == ARGI_PIZTU && argi_zenb == ARG_3)
+    if(argi3egoera == ARGI3_PIZTU && argi_zenb == ARG_3)
         glEnable(GL_LIGHT2);
-    else if(ARG_3 == ARGI_ITZALI && argi_zenb == ARG_3)
+    else if(argi3egoera == ARGI3_ITZALI && argi_zenb == ARG_3)
         glDisable(GL_LIGHT2);
-    argiak_sartu(argi_egoera, argi_zenb);
+    if(argi4egoera == ARGI4_PIZTU && argi_zenb == ARG_4)
+        glEnable(GL_LIGHT4);
+    else if(argi4egoera == ARGI4_ITZALI && argi_zenb == ARG_4)
+        glDisable(GL_LIGHT4);
+    if(argi5egoera == ARGI5_PIZTU && argi_zenb == ARG_5)
+        glEnable(GL_LIGHT4);
+    else if(argi5egoera == ARGI5_ITZALI && argi_zenb == ARG_5)
+        glDisable(GL_LIGHT5);
+    argiak_sartu(argi_mota, argi_zenb);
 
     /*Now each of the objects in the list*/
     while (aux_obj != 0) {
@@ -302,7 +332,7 @@ void display(void) {
         }
         
         if(materiala == BAI && argi_egoera == ARGIA_GAITU){
-            if(argi_zenb == ARG_1 || argi_zenb == ARG_2 || argi_zenb == ARG_3){
+            if(argi_zenb == ARG_1 || argi_zenb == ARG_2 || argi_zenb == ARG_3 || argi_zenb == ARG_4 || argi_zenb == ARG_5){
                 glDisable(GL_COLOR_MATERIAL);
                 glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, aux_obj -> material.ambient);
                 glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, aux_obj -> material.diffuse);

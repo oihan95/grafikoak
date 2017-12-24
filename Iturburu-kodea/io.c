@@ -75,6 +75,28 @@ void print_help(){
     printf("<DEL>\t\t Hautatutako objektua ezabatu\n");
     printf("<CTRL + ->\t Bistaratze-eremua handitu\n");
     printf("<CTRL + +>\t Bistaratze-eremua txikitu\n");
+    printf("<M,m>\t\t Translazioa aktibatu\n");
+    printf("<B,b>\t\t Tamaina aldaketa aktibatu\n");
+    printf("<G,g>\t\t Aldaketa globalak\n");
+    printf("<L,l>\t\t Aldaketa lokalak\n");
+    printf("<O,o>\t\t Aldaketak hautaturik dagoen  objektuari eragin\n");
+    printf("<K,k>\t\t Aldaketak uneko kamerari eragin\n");
+    printf("<A,a>\t\t Aldaketak hautaturik dagoen argiari eragin\n");
+    printf("<GEZIAK>\t Tamaina aldaketak, traslazioak eta biraketak gauzatzeko\n");
+    printf("<+>\t\t Ardatz guztietan handitu\n");
+    printf("<->\t\t Ardatz guztietan txikitu\n");
+    printf("<B,b>\t\t Biraketa aktibatu\n");
+    printf("<CTRL + z>\t Aldaketak desegin\n");
+    printf("<CTRL + x>\t Aldaketak berregin\n");
+    printf("<C,c>\t\t Kamera mota aldatu\n");
+    printf("<ENTER>\t\t Argiztatzea gaitu/desgaitu\n");
+    printf("<F1 - F5>\t Argiak piztu/itzali\n");
+    printf("<1 - 5>\t\t Argiak aukeratu\n");
+    printf("<0>\t\t Argi mota aldatu (aukerak, bonbilla, eguzkia eta fokua dira)\n");
+    printf("<F11>\t\t Hautaturik dagoen objektuari materiala kargatu\n");
+    printf("<F12>\t\t Hautaturik dagoen objektua bistaratzeko era (flat / smooth) aldatu\n");
+    printf("<+>\t\t Foku motako argi bat aukeraturik badago, bere angelua handitu\n");
+    printf("<->\t\t Foku motako argi bat aukeraturik badago, bere angelua txikitu\n");
     printf("\n\n");
 }
 
@@ -290,44 +312,61 @@ void keyboard(unsigned char key, int x, int y) {
         break;
 
     case '-':
-        if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
-            /*Increase the projection plane; compute the new dimensions*/
-            wd=(_ortho_x_max-_ortho_x_min)/KG_STEP_ZOOM;
-            he=(_ortho_y_max-_ortho_y_min)/KG_STEP_ZOOM;
-            /*In order to avoid moving the center of the plane, we get its coordinates*/
-            midx = (_ortho_x_max+_ortho_x_min)/2;
-            midy = (_ortho_y_max+_ortho_y_min)/2;
-            /*The the new limits are set, keeping the center of the plane*/
-            _ortho_x_max = midx + wd/2;
-            _ortho_x_min = midx - wd/2;
-            _ortho_y_max = midy + he/2;
-            _ortho_y_min = midy - he/2;
+        if (egoera_main == ARGIA && argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                if (angle2 < 0){
+                    printf("Fokuaren angelua ezin da gehio txikitu!\n");
+                }else{
+                    angle2 = angle2 - 1;
+                }
         }else{
-            if (_selected_object != NULL){
-                mx_t1 = scale(0.5, 0.5, 0.5);
-            	nodobatuketa(mx_t1);
+           
+             if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                /*Increase the projection plane; compute the new dimensions*/
+                wd=(_ortho_x_max-_ortho_x_min)/KG_STEP_ZOOM;
+                he=(_ortho_y_max-_ortho_y_min)/KG_STEP_ZOOM;
+                /*In order to avoid moving the center of the plane, we get its coordinates*/
+                midx = (_ortho_x_max+_ortho_x_min)/2;
+                midy = (_ortho_y_max+_ortho_y_min)/2;
+                /*The the new limits are set, keeping the center of the plane*/
+                _ortho_x_max = midx + wd/2;
+                _ortho_x_min = midx - wd/2;
+                _ortho_y_max = midy + he/2;
+                _ortho_y_min = midy - he/2;
+            }else{
+                if (_selected_object != NULL){
+                    mx_t1 = scale(0.5, 0.5, 0.5);
+                	nodobatuketa(mx_t1);
+                }
             }
         }
         break;
 
     case '+':
-        if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
-            /*Increase the projection plane; compute the new dimensions*/
-            wd=(_ortho_x_max-_ortho_x_min)*KG_STEP_ZOOM;
-            he=(_ortho_y_max-_ortho_y_min)*KG_STEP_ZOOM;
-            /*In order to avoid moving the center of the plane, we get its coordinates*/
-            midx = (_ortho_x_max+_ortho_x_min)/2;
-            midy = (_ortho_y_max+_ortho_y_min)/2;
-            /*The the new limits are set, keeping the center of the plane*/
-            _ortho_x_max = midx + wd/2;
-            _ortho_x_min = midx - wd/2;
-            _ortho_y_max = midy + he/2;
-            _ortho_y_min = midy - he/2;
+        if (egoera_main == ARGIA && argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                if (angle2 > 90){
+                    printf("Fokuaren angelua ezin da gehio handitu!\n");
+                }else{
+                    angle2 = angle2 + 1;
+                }
         }else{
-            if (_selected_object != NULL){
-                mx_t1 = scale(2, 2, 2);
-                nodobatuketa(mx_t1);
-            }
+            if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                /*Increase the projection plane; compute the new dimensions*/
+                wd=(_ortho_x_max-_ortho_x_min)*KG_STEP_ZOOM;
+                he=(_ortho_y_max-_ortho_y_min)*KG_STEP_ZOOM;
+                /*In order to avoid moving the center of the plane, we get its coordinates*/
+                midx = (_ortho_x_max+_ortho_x_min)/2;
+                midy = (_ortho_y_max+_ortho_y_min)/2;
+                /*The the new limits are set, keeping the center of the plane*/
+                _ortho_x_max = midx + wd/2;
+                _ortho_x_min = midx - wd/2;
+                _ortho_y_max = midy + he/2;
+                _ortho_y_min = midy - he/2;
+            }else{
+                if (_selected_object != NULL){
+                    mx_t1 = scale(2, 2, 2);
+                    nodobatuketa(mx_t1);
+                }
+            }            
         }
         break;
 
@@ -493,10 +532,10 @@ void keyboard(unsigned char key, int x, int y) {
     case 13:
             if (argi_egoera == ARGIA_DESGAITU) {
                 argi_egoera = ARGIA_GAITU;
-                printf("Argien kontrola gaitu da");
+                printf("Argien kontrola gaitu da\n");
             } else if (argi_egoera == ARGIA_GAITU) {
                 argi_egoera = ARGIA_DESGAITU;
-                printf("Argien kontrola desgaitu da");
+                printf("Argien kontrola desgaitu da\n");
             }
             break;
 
@@ -637,6 +676,14 @@ void keyboard_berezia(int key, int x, int y){
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
+                }else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[0] = bonbila -> kokapena[0] - 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[0] = fokua -> kokapena[0] - 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[0] = eguzkia -> norabidea[0] - 1;
+                    }
                 }
             }else{
                 printf("%s\n", KG_MSS_LEFT_EMPTY);
@@ -674,6 +721,14 @@ void keyboard_berezia(int key, int x, int y){
                         nodobatuketa(mx_t);
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
+                    }                    
+                }else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[0] = bonbila -> kokapena[0] + 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[0] = fokua -> kokapena[0] + 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[0] = eguzkia -> norabidea[0] + 1;
                     }
                 }
             }else{
@@ -713,6 +768,14 @@ void keyboard_berezia(int key, int x, int y){
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
+                } else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[2] = bonbila -> kokapena[2] + 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[2] = fokua -> kokapena[2] + 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[2] = eguzkia -> norabidea[2] + 1;
+                    }
                 }
             }else{
                 printf("%s\n", KG_MSSG_PAGE_UP_EMPTY);
@@ -750,6 +813,14 @@ void keyboard_berezia(int key, int x, int y){
                         nodobatuketa(mx_t);
                     }else{
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
+                    }
+                }else if (egoera_main == ARGIA){
+                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
+                        bonbila -> kokapena[2] = bonbila -> kokapena[2] - 1;
+                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
+                        fokua -> kokapena[2] = fokua -> kokapena[2] - 1;
+                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
+                        eguzkia -> norabidea[2] = eguzkia -> norabidea[2] - 1;
                     }
                 }
             }else{

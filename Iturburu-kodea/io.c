@@ -28,6 +28,12 @@ extern GLdouble *eye_KI;
 extern GLdouble *up_KI;
 extern GLdouble *center_KI;
 
+extern GLfloat *KA1;
+extern GLfloat *KA2;
+extern GLfloat *KA3;
+extern GLfloat *KA4;
+extern GLfloat *KA5;
+
 extern GLdouble _ortho_x_min,_ortho_x_max;
 extern GLdouble _ortho_y_min,_ortho_y_max;
 extern GLdouble _ortho_z_min,_ortho_z_max;
@@ -49,9 +55,12 @@ int argi5egoera = 34;
 int objektu_bistaratzea = 22;
 int materiala = 24;
 
-extern argia *eguzkia;
-extern argia *fokua;
-extern argia *bonbila;
+extern argia *arg1;
+extern argia *arg2;
+extern argia *arg3;
+extern argia *arg4;
+extern argia *arg5;
+
 
 float angle2 = 20.0;
 
@@ -137,6 +146,20 @@ GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore){
     return mult;
 }
 
+GLfloat *matrizeBektoreBiderketa2(GLfloat* matrize, GLfloat* bektore){
+    int c, d;
+    float sum = 0;
+    GLfloat * mult = malloc (sizeof ( GLfloat )*4);
+    for (c = 0; c < 4; c++) {
+        for (d = 0; d < 4; d++) {
+            sum = sum + matrize[c+(d*4)]*bektore[d];
+        }
+        mult[c] = sum;
+        sum = 0;
+    }
+    return mult;
+}
+
 void nodobatuketa(GLdouble* mx_1){
     elementua *berria=0;
     berria = (elementua *) malloc(sizeof (elementua));
@@ -186,6 +209,29 @@ void nodobatuketakameraibiltari(GLdouble* cam_mat){
     nodo -> atzera = kamera2 -> pila;
     nodo -> aurrera = NULL;
     kamera2 -> pila = nodo;
+}
+
+void aldaketakargiak(argia* arg, GLdouble* arg_mat){
+    elementua *nodo=0;
+    nodo = (elementua *) malloc(sizeof (elementua));
+    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
+    matrizeemaitza = matrizeBektoreBiderketa2(arg_mat, arg ->kokapena);
+    if (arg == arg1) {
+        KA1 = matrizeemaitza;
+    }else if (arg == arg2) {
+        KA2 = matrizeemaitza;
+    }else if (arg == arg3) {
+        KA3 = matrizeemaitza;
+    }else if (arg == arg4) {
+        KA4 = matrizeemaitza;
+    }else if (arg == arg5) {
+        KA5 = matrizeemaitza;
+    }
+    nodo -> matrizea = matrizeemaitza;
+    arg -> pila -> aurrera = nodo;
+    nodo -> atzera = arg -> pila;
+    nodo -> aurrera = NULL;
+    arg -> pila = nodo;
 }
 
 void printMatrix(GLdouble *lehena){
@@ -454,9 +500,9 @@ void keyboard(unsigned char key, int x, int y) {
                     if(kamera2 -> pila -> atzera != NULL){
                         if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
                             kamera2 -> pila = kamera2 -> pila -> atzera;
-                            eye_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> eye);
-                            center_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> center);
-                            up_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> up);
+                            eye_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> eye);
+                            center_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> center);
+                            up_KI = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> up);
                         }
                     }
                 }
@@ -472,8 +518,49 @@ void keyboard(unsigned char key, int x, int y) {
                     }
                 }else{
                     printf("Ez dago objekturik atzera pausua aplikazteko!\n");
+                }
+            }else if (egoera_main == ARGIA){
+                if (argi_egoera == ARGIA_GAITU) {
+                    if (argi_zenb == ARG_1 && argi1egoera == ARGI1_PIZTU) {
+                        if (arg1 -> pila -> atzera != NULL){
+                            arg1 -> pila = arg1 -> pila -> atzera;
+                            arg1 -> kokapena = arg1 -> pila -> matrizea;
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }else if (argi_zenb == ARG_2 && argi2egoera == ARGI2_PIZTU) {
+                        if (arg2 -> pila -> atzera != NULL){
+                            arg2 -> pila = arg2 -> pila -> atzera;
+                            strcpy(arg2 -> kokapena, arg2 -> pila -> matrizea);
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }else if (argi_zenb == ARG_3 && argi3egoera == ARGI3_PIZTU) {
+                        if (arg3 -> pila -> atzera != NULL){
+                            arg3 -> pila = arg3 -> pila -> atzera;
+                            strcpy(arg3 -> kokapena, arg3 -> pila -> matrizea);
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }else if (argi_zenb == ARG_4 && argi4egoera == ARGI4_PIZTU) {
+                        if (arg4 -> pila -> atzera != NULL){
+                            arg4 -> pila = arg4 -> pila -> atzera;
+                            strcpy(arg4 -> kokapena, arg4 -> pila -> matrizea);
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }else if (argi_zenb == ARG_5 && argi5egoera == ARGI5_PIZTU) {
+                        if (arg5 -> pila -> atzera != NULL){
+                            arg5 -> pila = arg5 -> pila -> atzera;
+                            strcpy(arg5 -> kokapena, arg5 -> pila -> matrizea);
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }
+                }else{
+                    printf("Argia ez dago aktibatuta\n");
+                }
             }
-	    }
 	    break;
 
     //CTRL + x dec code -> 24
@@ -512,6 +599,45 @@ void keyboard(unsigned char key, int x, int y) {
                 
             }else{
                 printf("Ez dago objekturik pausua berregiteko!\n");
+            }
+        }else if (egoera_main == ARGIA){
+            if (argi_egoera == ARGIA_GAITU) {
+                if (argi_zenb == ARG_1 && argi1egoera == ARGI1_PIZTU) {
+                    if (arg1 -> pila -> atzera != NULL){
+                        arg1 -> pila = arg1 -> pila -> aurrera;
+                        arg1 -> kokapena = arg1 -> pila -> matrizea;
+                    }else{
+                        printf("Ez dago atzera egiteko aukerarik!\n");
+                    }
+                }else if (argi_zenb == ARG_2 && argi2egoera == ARGI2_PIZTU) {
+                    if (arg2 -> pila -> atzera != NULL){
+                        arg2 -> pila = arg2 -> pila -> aurrera;
+                        arg2 -> kokapena = arg2 -> pila -> matrizea;
+                    }else{
+                        printf("Ez dago atzera egiteko aukerarik!\n");
+                    }
+                }else if (argi_zenb == ARG_3 && argi3egoera == ARGI3_PIZTU) {
+                    if (arg3 -> pila -> atzera != NULL){
+                        arg3 -> pila = arg3 -> pila -> aurrera;
+                        arg3 -> kokapena = arg3 -> pila -> matrizea;
+                    }else{
+                        printf("Ez dago atzera egiteko aukerarik!\n");
+                    }
+                }else if (argi_zenb == ARG_4 && argi4egoera == ARGI4_PIZTU) {
+                    if (arg4 -> pila -> atzera != NULL){
+                        arg4 -> pila = arg4 -> pila -> aurrera;
+                        arg4 -> kokapena = arg4 -> pila -> matrizea;
+                    }else{
+                        printf("Ez dago atzera egiteko aukerarik!\n");
+                    }
+                }else if (argi_zenb == ARG_5 && argi5egoera == ARGI5_PIZTU) {
+                    if (arg5 -> pila -> atzera != NULL){
+                        arg5 -> pila = arg5 -> pila -> aurrera;
+                        arg5 -> kokapena = arg5 -> pila -> matrizea;
+                    }else{
+                        printf("Ez dago atzera egiteko aukerarik!\n");
+                    }
+                }
             }
         }
 	    break;
@@ -594,6 +720,7 @@ void keyboard_berezia(int key, int x, int y){
     
     GLdouble *mx_t=0;
     GLdouble *cam_mat=0;
+    GLdouble *arg_mat=0;
     
     switch (key) {
            
@@ -628,12 +755,17 @@ void keyboard_berezia(int key, int x, int y){
                     }
                     nodobatuketa(mx_t);
                 } else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[1] = bonbila -> kokapena[1] + 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[1] = fokua -> kokapena[1] + 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[1] = eguzkia -> norabidea[1] + 1;
+                    arg_mat = translate(0, 1, 0);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{
@@ -674,12 +806,17 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[1] = bonbila -> kokapena[1] - 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[1] = fokua -> kokapena[1] - 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[1] = eguzkia -> norabidea[1] - 1;
+                    arg_mat = translate(0, -1, 0);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{
@@ -720,12 +857,17 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[0] = bonbila -> kokapena[0] - 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[0] = fokua -> kokapena[0] - 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[0] = eguzkia -> norabidea[0] - 1;
+                    arg_mat = translate(-1, 0, 0);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{
@@ -766,12 +908,17 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }                    
                 }else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[0] = bonbila -> kokapena[0] + 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[0] = fokua -> kokapena[0] + 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[0] = eguzkia -> norabidea[0] + 1;
+                    arg_mat = translate(1, 0, 0);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{
@@ -812,12 +959,17 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 } else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[2] = bonbila -> kokapena[2] + 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[2] = fokua -> kokapena[2] + 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[2] = eguzkia -> norabidea[2] + 1;
+                    arg_mat = translate(0, 0, 1);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{
@@ -858,12 +1010,17 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    if(argi_mota == ARG_BONBILLA && argi_egoera == ARGIA_GAITU){
-                        bonbila -> kokapena[2] = bonbila -> kokapena[2] - 1;
-                    }else if(argi_mota == ARG_FOKUA && argi_egoera == ARGIA_GAITU){
-                        fokua -> kokapena[2] = fokua -> kokapena[2] - 1;
-                    }else if(argi_mota == ARG_EGUZKIA && argi_egoera == ARGIA_GAITU){
-                        eguzkia -> norabidea[2] = eguzkia -> norabidea[2] - 1;
+                    arg_mat = translate(0, 0, -1);
+                    if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
+                        aldaketakargiak(arg1, arg_mat);
+                    }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
+                        aldaketakargiak(arg2, arg_mat);
+                    }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
+                        aldaketakargiak(arg3, arg_mat);
+                    }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
+                        aldaketakargiak(arg4, arg_mat);
+                    }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
+                        aldaketakargiak(arg5, arg_mat);
                     }
                 }
             }else{

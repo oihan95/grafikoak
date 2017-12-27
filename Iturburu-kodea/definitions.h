@@ -183,14 +183,6 @@ typedef struct {
     GLint *vertex_table;                /* table with the index of each vertex */
 } face;
 
-struct argia{
-    GLfloat kokapena[4];
-    GLfloat norabidea[4];
-    struct argia *next;
-};
-
-typedef struct argia argia;
-
 typedef struct material{
     GLfloat ambient[4];
     GLfloat diffuse[4];
@@ -209,6 +201,14 @@ struct elementua{
 };
 
 typedef struct elementua elementua;
+
+struct elementua2{
+    GLfloat *matrizea;
+    struct elementua2 *atzera;
+    struct elementua2 *aurrera;
+};
+
+typedef struct elementua2 elementua2;
 
 /****************************
  * Structure to store a     *
@@ -239,5 +239,15 @@ struct camera3d {
 };
 
 typedef struct camera3d camera3d;
+
+struct argia{
+    GLfloat *kokapena;
+    GLfloat *norabidea;
+    GLint mota;
+    GLfloat angelua;
+    elementua2 *pila;
+};
+
+typedef struct argia argia;
 
 #endif // DEFINITIONS_H

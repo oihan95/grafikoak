@@ -319,7 +319,6 @@ void keyboard(unsigned char key, int x, int y) {
                     angle2 = angle2 - 1;
                 }
         }else{
-           
              if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
                 /*Increase the projection plane; compute the new dimensions*/
                 wd=(_ortho_x_max-_ortho_x_min)/KG_STEP_ZOOM;
@@ -441,36 +440,80 @@ void keyboard(unsigned char key, int x, int y) {
 
     //CTRL + z dec code -> 26
     case 26:
-	    if (_selected_object != NULL){
-	  	  if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
-	    		if (_selected_object -> pila -> atzera != NULL){
-				_selected_object -> pila = _selected_object -> pila -> atzera;
-				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
-                }else{
-                    printf("Ez dago atzera egiteko aukerarik!\n");
+            if (egoera_main == KAMARA) {
+                if (egoera_kamara == KAM_PERS) {
+                    if(kamera -> pila -> atzera != NULL){
+                        if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                            kamera -> pila = kamera -> pila -> atzera;
+                            eye_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> eye);
+                            center_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> center);
+                            up_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> up);
+                        }
+                    }
+                } else if (egoera_kamara == KAM_IBIL) {
+                    if(kamera2 -> pila -> atzera != NULL){
+                        if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                            kamera2 -> pila = kamera2 -> pila -> atzera;
+                            eye_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> eye);
+                            center_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> center);
+                            up_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> up);
+                        }
+                    }
                 }
-	 	   }
-        }else{
-            printf("Ez dago objekturik atzera pausua aplikazteko!\n");
+            } else if (egoera_main == TRANSFORMAZIOA){
+                if (_selected_object != NULL){
+                    if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                        if (_selected_object -> pila -> atzera != NULL){
+                            _selected_object -> pila = _selected_object -> pila -> atzera;
+                            _selected_object -> matrizea = _selected_object -> pila -> matrizea;
+                        }else{
+                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        }
+                    }
+                }else{
+                    printf("Ez dago objekturik atzera pausua aplikazteko!\n");
+            }
 	    }
 	    break;
 
     //CTRL + x dec code -> 24
     case 24:
-	    if (_selected_object != NULL){
-	  	  if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
-	    		if (_selected_object -> pila -> aurrera != NULL){
-				_selected_object -> pila = _selected_object -> pila -> aurrera;
-				_selected_object -> matrizea = _selected_object -> pila -> matrizea;
-                    
-                }else{
-                    printf("Ez dago pausua berregiteko aukerarik!\n");
+        if (egoera_main == KAMARA) {
+            if (egoera_kamara == KAM_PERS) {
+                if(kamera -> pila -> aurrera != NULL){
+                    if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                        kamera -> pila = kamera -> pila -> aurrera;
+                        eye_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> eye);
+                        center_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera -> center);
+                        up_PK = matrizeBektoreBiderketa(kamera -> pila -> matrizea, kamera-> up);
+                    }
                 }
-	 	   }
-            
-        }else{
-            printf("Ez dago objekturik pausua berregiteko!\n");
-	    }
+            } else if (egoera_kamara == KAM_IBIL) {
+                if(kamera2 -> pila -> aurrera != NULL){
+                    if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                        kamera2 -> pila = kamera2 -> pila -> aurrera;
+                        eye_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> eye);
+                        center_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> center);
+                        up_PK = matrizeBektoreBiderketa(kamera2 -> pila -> matrizea, kamera2 -> up);
+                    }
+                }
+            }
+        } else if (egoera_main == TRANSFORMAZIOA){
+            if (_selected_object != NULL){
+                if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                    if (_selected_object -> pila -> aurrera != NULL){
+                        _selected_object -> pila = _selected_object -> pila -> aurrera;
+                        _selected_object -> matrizea = _selected_object -> pila -> matrizea;
+                        
+                    }else{
+                        printf("Ez dago pausua berregiteko aukerarik!\n");
+                    }
+                }
+                
+            }else{
+                printf("Ez dago objekturik pausua berregiteko!\n");
+            }
+        }
 	    break;
             
     case 'c':

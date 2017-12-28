@@ -13,6 +13,5 @@ GLdouble *matrizeBektoreBiderketa(GLdouble* matrize, GLdouble* bektore);
 GLfloat *matrizeBektoreBiderketa2(GLfloat* matrize, GLfloat* bektore);
 void print_help();
 void printMatrix(GLdouble *lehena);
-void aldaketakargiak(argia* arg, GLdouble* arg_mat);
 
 #endif // IO_H

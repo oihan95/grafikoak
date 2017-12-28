@@ -37,12 +37,6 @@ GLdouble *eye_KI;
 GLdouble *up_KI;
 GLdouble *center_KI;
 
-GLfloat *KA1;
-GLfloat *KA2;
-GLfloat *KA3;
-GLfloat *KA4;
-GLfloat *KA5;
-
 argia *arg1;
 argia *arg2;
 argia *arg3;
@@ -51,13 +45,7 @@ argia *arg5;
 
 /** GENERAL INITIALIZATION **/
 void initialization (){
-    
-    KA1 = malloc(sizeof(GLfloat)*4);
-    KA2 = malloc(sizeof(GLfloat)*4);
-    KA3 = malloc(sizeof(GLfloat)*4);
-    KA4 = malloc(sizeof(GLfloat)*4);
-    KA5 = malloc(sizeof(GLfloat)*4);
-    
+
     eye_PK = malloc ( sizeof ( GLdouble )*4);
     center_PK = malloc ( sizeof ( GLdouble )*4);
     up_PK = malloc ( sizeof ( GLdouble )*4);
@@ -70,7 +58,7 @@ void initialization (){
     view_mat=identitate_matrizea();
     
     arg1 = (argia *) malloc(sizeof (argia));
-    arg1 -> pila = (elementua *) malloc(sizeof (elementua));
+    arg1 -> pila = (elementua2 *) malloc(sizeof (elementua2));
     arg1 -> kokapena = malloc ( sizeof ( GLdouble )*4);
     arg1 -> kokapena[0] = 1;
     arg1 -> kokapena[1] = 4;
@@ -81,7 +69,7 @@ void initialization (){
     arg1 -> pila -> atzera= NULL;
     
     arg2 = (argia *) malloc(sizeof (argia));
-    arg2 -> pila = (elementua *) malloc(sizeof (elementua));
+    arg2 -> pila = (elementua2 *) malloc(sizeof (elementua2));
     arg2 -> kokapena = malloc ( sizeof ( GLdouble )*4);
     arg2 -> kokapena[0] = 0;
     arg2 -> kokapena[1] = 30;
@@ -92,7 +80,7 @@ void initialization (){
     arg2 -> pila -> atzera= NULL;
     
     arg3 = (argia *) malloc(sizeof (argia));
-    arg3 -> pila = (elementua *) malloc(sizeof (elementua));
+    arg3 -> pila = (elementua2 *) malloc(sizeof (elementua2));
     arg3 -> kokapena = malloc ( sizeof ( GLdouble )*4);
     arg3 -> kokapena[0] = 2;
     arg3 -> kokapena[1] = 7;
@@ -103,7 +91,7 @@ void initialization (){
     arg3 -> pila -> atzera= NULL;
     
     arg4 = (argia *) malloc(sizeof (argia));
-    arg4 -> pila = (elementua *) malloc(sizeof (elementua));
+    arg4 -> pila = (elementua2 *) malloc(sizeof (elementua2));
     arg4 -> kokapena = malloc ( sizeof ( GLdouble )*4);
     arg4 -> kokapena[0] = 0;
     arg4 -> kokapena[1] = -4;
@@ -114,7 +102,7 @@ void initialization (){
     arg4 -> pila -> atzera= NULL;
     
     arg5 = (argia *) malloc(sizeof (argia));
-    arg5 -> pila = (elementua *) malloc(sizeof (elementua));
+    arg5 -> pila = (elementua2 *) malloc(sizeof (elementua2));
     arg5 -> kokapena = malloc ( sizeof ( GLdouble )*4);
     arg5 -> kokapena[0] = 7;
     arg5 -> kokapena[1] = 2;
@@ -123,12 +111,6 @@ void initialization (){
     arg5 -> mota = ARG_BONBILLA;
     arg5 -> pila -> aurrera= NULL;
     arg5 -> pila -> atzera= NULL;
-    
-    KA1 = arg1 -> kokapena;
-    KA2 = arg2 -> kokapena;
-    KA3 = arg3 -> kokapena;
-    KA4 = arg4 -> kokapena;
-    KA5 = arg5 -> kokapena;
 
     /*Initialization of all the variables with the default values*/
     _ortho_x_min = KG_ORTHO_X_MIN_INIT;

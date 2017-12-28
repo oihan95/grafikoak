@@ -55,12 +55,6 @@ extern argia *arg3;
 extern argia *arg4;
 extern argia *arg5;
 
-extern GLfloat *KA1;
-extern GLfloat *KA2;
-extern GLfloat *KA3;
-extern GLfloat *KA4;
-extern GLfloat *KA5;
-
 /**
  * @brief Function to draw the axes
  */
@@ -90,10 +84,10 @@ void argiak_sartu(int argimota, int argizenb){
     GLfloat norabidea[4] = {0.0, -1.0, 0.0};
     if (argizenb == ARG_1) {
         if (arg1 -> mota == ARG_BONBILLA){
-            glLightfv(GL_LIGHT0, GL_POSITION, KA1);
+            glLightfv(GL_LIGHT0, GL_POSITION, arg1 -> kokapena);
             glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0);
         }else if (arg1 -> mota == ARG_FOKUA){
-            glLightfv(GL_LIGHT0, GL_POSITION, KA1);
+            glLightfv(GL_LIGHT0, GL_POSITION, arg1 -> kokapena);
             glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, arg1 -> angelua);
             glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1.0);
@@ -102,10 +96,10 @@ void argiak_sartu(int argimota, int argizenb){
         }
     }else if (argizenb == ARG_2) {
         if (arg2 -> mota == ARG_BONBILLA){
-            glLightfv(GL_LIGHT1, GL_POSITION, KA2);
+            glLightfv(GL_LIGHT1, GL_POSITION, arg2 -> kokapena);
             glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 180.0);
         }else if (arg2 -> mota == ARG_FOKUA){
-            glLightfv(GL_LIGHT1, GL_POSITION, KA2);
+            glLightfv(GL_LIGHT1, GL_POSITION, arg2 -> kokapena);
             glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, arg2 -> angelua);
             glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 1.0);
@@ -114,10 +108,10 @@ void argiak_sartu(int argimota, int argizenb){
         }
     }else if (argizenb == ARG_3) {
         if (arg3 -> mota == ARG_BONBILLA){
-            glLightfv(GL_LIGHT2, GL_POSITION, KA3);
+            glLightfv(GL_LIGHT2, GL_POSITION, arg3 -> kokapena);
             glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180.0);
         }else if (arg3 -> mota == ARG_FOKUA){
-            glLightfv(GL_LIGHT2, GL_POSITION, KA3);
+            glLightfv(GL_LIGHT2, GL_POSITION, arg3 -> kokapena);
             glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, arg3 -> angelua);
             glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1.0);
@@ -126,10 +120,10 @@ void argiak_sartu(int argimota, int argizenb){
         }
     }else if (argizenb == ARG_4) {
         if (arg4 -> mota == ARG_BONBILLA){
-            glLightfv(GL_LIGHT3, GL_POSITION, KA4);
+            glLightfv(GL_LIGHT3, GL_POSITION, arg4 -> kokapena);
             glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, 180.0);
         }else if (arg4 -> mota == ARG_FOKUA){
-            glLightfv(GL_LIGHT3, GL_POSITION, KA4);
+            glLightfv(GL_LIGHT3, GL_POSITION, arg4 -> kokapena);
             glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, arg4 -> angelua);
             glLightf(GL_LIGHT3, GL_SPOT_EXPONENT, 1.0);
@@ -138,10 +132,10 @@ void argiak_sartu(int argimota, int argizenb){
         }
     }else if (argizenb == ARG_5) {
         if (arg5 -> mota == ARG_BONBILLA){
-            glLightfv(GL_LIGHT4, GL_POSITION, KA5);
+            glLightfv(GL_LIGHT4, GL_POSITION, arg5 -> kokapena);
             glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, 180.0);
         }else if (arg5 -> mota == ARG_FOKUA){
-            glLightfv(GL_LIGHT4, GL_POSITION, KA5);
+            glLightfv(GL_LIGHT4, GL_POSITION, arg5 -> kokapena);
             glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, norabidea);
             glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, arg5 -> angelua);
             glLightf(GL_LIGHT4, GL_SPOT_EXPONENT, 1.0);

@@ -243,6 +243,8 @@ typedef struct camera3d camera3d;
 struct argia{
     GLfloat *kokapena;
     GLfloat *norabidea;
+    GLfloat *atzera;
+    GLfloat *aurrera;
     GLint mota;
     GLfloat angelua;
     elementua2 *pila;

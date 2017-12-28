@@ -28,12 +28,6 @@ extern GLdouble *eye_KI;
 extern GLdouble *up_KI;
 extern GLdouble *center_KI;
 
-extern GLfloat *KA1;
-extern GLfloat *KA2;
-extern GLfloat *KA3;
-extern GLfloat *KA4;
-extern GLfloat *KA5;
-
 extern GLdouble _ortho_x_min,_ortho_x_max;
 extern GLdouble _ortho_y_min,_ortho_y_max;
 extern GLdouble _ortho_z_min,_ortho_z_max;
@@ -211,35 +205,17 @@ void nodobatuketakameraibiltari(GLdouble* cam_mat){
     kamera2 -> pila = nodo;
 }
 
-void aldaketakargiak(argia* arg, GLdouble* arg_mat){
-    elementua *nodo=0;
-    nodo = (elementua *) malloc(sizeof (elementua));
-    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
-    matrizeemaitza = matrizeBektoreBiderketa2(arg_mat, arg ->kokapena);
-    if (arg == arg1) {
-        KA1 = matrizeemaitza;
-    }else if (arg == arg2) {
-        KA2 = matrizeemaitza;
-    }else if (arg == arg3) {
-        KA3 = matrizeemaitza;
-    }else if (arg == arg4) {
-        KA4 = matrizeemaitza;
-    }else if (arg == arg5) {
-        KA5 = matrizeemaitza;
-    }
-    nodo -> matrizea = matrizeemaitza;
-    arg -> pila -> aurrera = nodo;
-    nodo -> atzera = arg -> pila;
-    nodo -> aurrera = NULL;
-    arg -> pila = nodo;
-}
-
 void printMatrix(GLdouble *lehena){
     int c;
     for (c = 0; c < 4; c++){
         printf("\t %f \t %f \t %f \t %f \n",lehena[c], lehena[c+4], lehena[c+8], lehena[c+12]);
     }
     printf("\n");
+}
+
+void printBektore(GLfloat *bek){
+    int c=0;
+    printf("\t %f \t %f \t %f \t %f \n",bek[c], bek[c+1], bek[c+2], bek[c+3]);
 }
 
 vector3 calc_norm(point3 *p1, point3 *p2, point3 *p3){
@@ -522,37 +498,43 @@ void keyboard(unsigned char key, int x, int y) {
             }else if (egoera_main == ARGIA){
                 if (argi_egoera == ARGIA_GAITU) {
                     if (argi_zenb == ARG_1 && argi1egoera == ARGI1_PIZTU) {
-                        if (arg1 -> pila -> atzera != NULL){
-                            arg1 -> pila = arg1 -> pila -> atzera;
-                            arg1 -> kokapena = arg1 -> pila -> matrizea;
-                        }else{
-                            printf("Ez dago atzera egiteko aukerarik!\n");
+                        if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
+                            if (arg1 -> pila -> atzera != NULL){
+                                arg1 -> pila = arg1 -> pila -> atzera;
+                                //printBektore(arg1->pila->matrizea);
+                                GLfloat * m1 = malloc(sizeof(GLfloat)*4);
+                                m1 = arg1 -> pila -> matrizea;
+                                arg1 -> kokapena = m1;
+                                //printBektore(arg1->kokapena);
+                            }else{
+                                printf("Ez dago atzera egiteko aukerarik!\n");
+                            }
                         }
                     }else if (argi_zenb == ARG_2 && argi2egoera == ARGI2_PIZTU) {
                         if (arg2 -> pila -> atzera != NULL){
                             arg2 -> pila = arg2 -> pila -> atzera;
-                            strcpy(arg2 -> kokapena, arg2 -> pila -> matrizea);
+                            arg2 -> kokapena = arg2 -> pila -> matrizea;
                         }else{
                             printf("Ez dago atzera egiteko aukerarik!\n");
                         }
                     }else if (argi_zenb == ARG_3 && argi3egoera == ARGI3_PIZTU) {
                         if (arg3 -> pila -> atzera != NULL){
                             arg3 -> pila = arg3 -> pila -> atzera;
-                            strcpy(arg3 -> kokapena, arg3 -> pila -> matrizea);
+                            arg3 -> kokapena = arg3 -> pila -> matrizea;
                         }else{
                             printf("Ez dago atzera egiteko aukerarik!\n");
                         }
                     }else if (argi_zenb == ARG_4 && argi4egoera == ARGI4_PIZTU) {
                         if (arg4 -> pila -> atzera != NULL){
                             arg4 -> pila = arg4 -> pila -> atzera;
-                            strcpy(arg4 -> kokapena, arg4 -> pila -> matrizea);
+                            arg4 -> kokapena = arg4 -> pila -> matrizea;
                         }else{
                             printf("Ez dago atzera egiteko aukerarik!\n");
                         }
                     }else if (argi_zenb == ARG_5 && argi5egoera == ARGI5_PIZTU) {
                         if (arg5 -> pila -> atzera != NULL){
                             arg5 -> pila = arg5 -> pila -> atzera;
-                            strcpy(arg5 -> kokapena, arg5 -> pila -> matrizea);
+                            arg5 -> kokapena = arg5 -> pila -> matrizea;
                         }else{
                             printf("Ez dago atzera egiteko aukerarik!\n");
                         }
@@ -755,17 +737,49 @@ void keyboard_berezia(int key, int x, int y){
                     }
                     nodobatuketa(mx_t);
                 } else if (egoera_main == ARGIA){
-                    arg_mat = translate(0, 1, 0);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
@@ -806,17 +820,49 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    arg_mat = translate(0, -1, 0);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo->atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[1] = matrizeemaitza[1]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
@@ -857,17 +903,49 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    arg_mat = translate(-1, 0, 0);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
@@ -908,17 +986,49 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }                    
                 }else if (egoera_main == ARGIA){
-                    arg_mat = translate(1, 0, 0);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[0] = matrizeemaitza[0]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
@@ -959,17 +1069,49 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 } else if (egoera_main == ARGIA){
-                    arg_mat = translate(0, 0, 1);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]+1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
@@ -1010,17 +1152,49 @@ void keyboard_berezia(int key, int x, int y){
                         printf("%s\n", KG_MSS_OPTION_EMPTY);
                     }
                 }else if (egoera_main == ARGIA){
-                    arg_mat = translate(0, 0, -1);
+                    elementua2 *nodo = 0;
+                    nodo = (elementua2 *) malloc(sizeof (elementua2));
+                    GLfloat * matrizeemaitza = malloc(sizeof(GLfloat)*4);
                     if(argi_zenb == ARG_1 && argi_egoera == ARGIA_GAITU && argi1egoera == ARGI1_PIZTU){
-                        aldaketakargiak(arg1, arg_mat);
+                        matrizeemaitza = arg1 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg1 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg1 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg1 -> pila = nodo;
                     }else if(argi_zenb == ARG_2 && argi_egoera == ARGIA_GAITU && argi2egoera == ARGI2_PIZTU){
-                        aldaketakargiak(arg2, arg_mat);
+                        matrizeemaitza = arg2 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg2 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg2 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg2 -> pila = nodo;
                     }else if(argi_zenb == ARG_3 && argi_egoera == ARGIA_GAITU && argi3egoera == ARGI3_PIZTU){
-                        aldaketakargiak(arg3, arg_mat);
+                        matrizeemaitza = arg3 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg3 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg3 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg3 -> pila = nodo;
                     }else if(argi_zenb == ARG_4 && argi_egoera == ARGIA_GAITU && argi4egoera == ARGI4_PIZTU){
-                        aldaketakargiak(arg4, arg_mat);
+                        matrizeemaitza = arg4 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg4 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg4 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg4 -> pila = nodo;
                     }else if(argi_zenb == ARG_5 && argi_egoera == ARGIA_GAITU && argi5egoera == ARGI5_PIZTU){
-                        aldaketakargiak(arg5, arg_mat);
+                        matrizeemaitza = arg5 -> kokapena;
+                        matrizeemaitza[2] = matrizeemaitza[2]-1;
+                        nodo -> matrizea = matrizeemaitza;
+                        arg5 -> pila -> aurrera = nodo;
+                        nodo -> atzera = arg5 -> pila;
+                        nodo -> aurrera = NULL;
+                        arg5 -> pila = nodo;
                     }
                 }
             }else{
